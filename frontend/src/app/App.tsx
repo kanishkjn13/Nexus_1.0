@@ -8,6 +8,7 @@ import { AuthView } from './components/AuthView';
 import { ProfileView } from './components/ProfileView';
 import { SettingsView } from './components/SettingsView';
 import { AiView } from './components/AiView';
+import { ChallengesView } from './components/ChallengesView';
 
 const VIEWS = {
   HOME: 'home',
@@ -58,12 +59,7 @@ export default function App() {
           </>
         );
       case VIEWS.CHALLENGES:
-        return (
-          <div className="flex flex-col items-center justify-center p-20 text-center animate-in fade-in slide-in-from-bottom-5 duration-500">
-            <h2 className="text-4xl font-black text-[#362A4A] dark:text-[#FBE4D8] mb-4">Daily Challenges</h2>
-            <p className="text-[#522B5B]/70 dark:text-[#DFB6B2] font-semibold text-lg max-w-md">Challenges are coming soon! Sharpen your skills and prepare to earn more XP.</p>
-          </div>
-        );
+        return <ChallengesView />;
       case VIEWS.PROGRESS:
         return (
           <div className="flex flex-col items-center justify-center p-20 text-center animate-in fade-in slide-in-from-bottom-5 duration-500">
