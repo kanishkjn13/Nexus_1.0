@@ -7,6 +7,7 @@ import { Footer } from './components/Footer';
 import { AuthView } from './components/AuthView';
 import { ProfileView } from './components/ProfileView';
 import { SettingsView } from './components/SettingsView';
+import { AiView } from './components/AiView';
 
 const VIEWS = {
   HOME: 'home',
@@ -28,23 +29,17 @@ export default function App() {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [isAuthMounted, setIsAuthMounted] = useState(false);
 
-  // Check local storage for persistent login
+  // On mount
   useEffect(() => {
-    const savedUser = localStorage.getItem('proofly_user');
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    }
     setIsAuthMounted(true);
   }, []);
 
   const onLogin = useCallback((userData: UserProfile) => {
     setUser(userData);
-    localStorage.setItem('proofly_user', JSON.stringify(userData));
   }, []);
 
   const onLogout = useCallback(() => {
     setUser(null);
-    localStorage.removeItem('proofly_user');
   }, []);
 
   const navigateTo = useCallback((view: string) => {
@@ -77,12 +72,7 @@ export default function App() {
           </div>
         );
       case VIEWS.AI:
-        return (
-          <div className="flex flex-col items-center justify-center p-20 text-center animate-in fade-in slide-in-from-bottom-5 duration-500">
-            <h2 className="text-4xl font-black text-[#362A4A] dark:text-[#FBE4D8] mb-4">Proofly AI</h2>
-            <p className="text-[#522B5B]/70 dark:text-[#DFB6B2] font-semibold text-lg max-w-md">The next generation AI assistant for your learning. Coming very soon.</p>
-          </div>
-        );
+        return <AiView />;
       case VIEWS.PROFILE:
         return user ? (
           <ProfileView user={user} onUpdateUser={onLogin} />

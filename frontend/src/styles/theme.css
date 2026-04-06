@@ -232,11 +232,11 @@
 ═══════════════════════════════════════════════════════════════════ */
 .dash-grid {
   display: grid;
-  grid-template-columns: 5fr 4fr 3fr;
+  grid-template-columns: 1fr 1fr 1fr;
   grid-template-areas:
-    "studying  students   challenges"
-    "studying  students   goal"
-    "reinforce streak     invite";
+    "studying    students    reinforce"
+    "studying    students    reinforce"
+    "challenges  streak      goal";
   gap: 1.25rem;
   align-items: stretch;
 }
@@ -266,20 +266,14 @@
   grid-area: streak;
 }
 
-.dash-invite {
-  grid-area: invite;
-}
-
-/* Tablet ≤ 1024px — 2-column layout */
+/* Tablet ≤ 1024px — 2-column layout balanced */
 @media (max-width: 1024px) {
   .dash-grid {
     grid-template-columns: 1fr 1fr;
     grid-template-areas:
       "studying   students"
-      "studying   challenges"
-      "reinforce  goal"
-      "reinforce  streak"
-      "invite     invite";
+      "reinforce  challenges"
+      "streak     goal";
   }
 }
 
@@ -290,11 +284,10 @@
     grid-template-areas:
       "studying"
       "students"
-      "challenges"
-      "goal"
       "reinforce"
+      "challenges"
       "streak"
-      "invite";
+      "goal";
   }
 }
 
