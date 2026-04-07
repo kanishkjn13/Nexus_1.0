@@ -11,7 +11,7 @@ export function ChallengesView() {
   return (
     <div className="w-full text-white font-sans animate-in fade-in slide-in-from-bottom-5 duration-500 pb-10">
       {/* HEADER */}
-      <div className="relative mb-8 pt-4 flex flex-col md:flex-row md:items-center justify-between">
+        {/* Header Text */}
         <div className="z-10">
           <h1 className="text-4xl md:text-5xl font-bold mb-3 tracking-tight dark:text-white text-[#362A4A]">
             Challenges
@@ -21,22 +21,6 @@ export function ChallengesView() {
           </p>
         </div>
 
-        {/* Glowing Trophy Graphic */}
-        <div className="absolute left-1/2 -top-10 -translate-x-1/2 w-[300px] h-[300px] pointer-events-none hidden md:block">
-          <div className="absolute inset-0 bg-yellow-500/20 blur-[80px] rounded-full mix-blend-screen" />
-          <div className="absolute inset-x-10 bottom-10 h-10 bg-gradient-to-t from-[#2a1744] to-transparent rounded-[100%] blur-md" />
-          <div className="absolute inset-x-20 bottom-14 h-4 bg-yellow-400/30 rounded-[100%] blur-sm" />
-          <div className="absolute inset-0 flex flex-col items-center justify-center -mt-6">
-            <div className="relative">
-              <Trophy className="w-24 h-24 text-yellow-400 drop-shadow-[0_0_15px_rgba(250,204,21,0.5)] z-10" strokeWidth={1.5} />
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-white/20 blur-xl rounded-full" />
-              <Star className="absolute -top-2 -right-4 w-6 h-6 text-yellow-300 fill-yellow-300 animate-pulse" />
-              <Star className="absolute min-w-4 max-w-4 top-10 -left-6 w-4 h-4 text-yellow-100 fill-yellow-100 animate-pulse" style={{ animationDelay: '1s' }} />
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* STATS ROW */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {[
@@ -45,7 +29,7 @@ export function ChallengesView() {
           { title: "Challenges Completed", value: "24", sub: "This month", greenSub: " +8", icon: CheckCircle2, color: "bg-teal-500", text: "text-teal-500" },
           { title: "Global Rank", value: "Top 5%", sub: "of all learners", icon: Globe, color: "bg-indigo-500", text: "text-indigo-500" },
         ].map((stat, i) => (
-          <div key={i} className="bg-white/80 dark:bg-[#1a1226]/80 backdrop-blur-md rounded-2xl p-5 border border-purple-100 dark:border-white/5 flex items-center gap-4 hover:bg-[#2a1f42]/90 transition-colors cursor-default shadow-lg shadow-black/10">
+          <div key={i} className="bg-white/80 dark:bg-[#1a1226]/80 backdrop-blur-md rounded-2xl p-5 border border-purple-100 dark:border-white/5 flex items-center gap-4 hover:bg-purple-50/50 dark:hover:bg-white/5 transition-all duration-300 cursor-default shadow-lg shadow-black/10 group hover:scale-[1.02]">
             <div className={`w-14 h-14 rounded-full flex items-center justify-center bg-white/5`}>
               <stat.icon className={`w-7 h-7 ${stat.text} fill-current`} strokeWidth={1} />
             </div>
@@ -74,9 +58,7 @@ export function ChallengesView() {
                 Refreshes in 12h 30m
               </div>
             </div>
-            <button className="text-sm text-gray-300 dark:text-gray-400 hover:text-white px-4 py-1.5 rounded-full bg-[#522B5B]/5 dark:bg-white/5 hover:bg-[#522B5B]/10 dark:hover:bg-white/10 transition-colors">
-              View All
-            </button>
+
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-3 gap-4 flex-1">
@@ -164,9 +146,7 @@ export function ChallengesView() {
         <div className="lg:col-span-1 bg-white/80 dark:bg-[#1a1226]/80 backdrop-blur-md rounded-2xl p-5 border border-purple-100 dark:border-white/5 shadow-lg shadow-black/10">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold dark:text-white text-[#1f172a]">Weekly Leaderboard</h2>
-            <button className="text-sm text-gray-300 dark:text-gray-400 hover:text-white px-4 py-1.5 rounded-full bg-[#522B5B]/5 dark:bg-white/5 hover:bg-[#522B5B]/10 dark:hover:bg-white/10 transition-colors">
-              View All
-            </button>
+
           </div>
 
           <div className="flex flex-col gap-1.5">

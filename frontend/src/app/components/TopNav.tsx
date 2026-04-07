@@ -53,8 +53,8 @@ export function TopNav({ onSearch, user, onProfileClick }: TopNavProps) {
     <nav className={`flex justify-between items-center px-10 py-5 sticky top-0 z-40 hidden lg:flex transition-all duration-300 ease-out ${scrolled ? 'bg-white/70 dark:bg-[#190019]/80 backdrop-blur-xl border-b border-white/50 dark:border-white/5 shadow-sm' : 'bg-transparent'}`}>
       <div className="flex items-center gap-6 flex-1">
         <label className="flex items-center bg-white/40 dark:bg-[#2B124C]/40 backdrop-blur-md rounded-full px-5 py-2.5 border border-white/60 dark:border-white/10 shadow-sm focus-within:ring-2 focus-within:ring-purple-300 dark:focus-within:ring-[#522B5B] w-[320px] transition-all">
-          <Search className="w-5 h-5 text-gray-400 dark:text-[#DFB6B2]/50 mr-3 shrink-0" />
-          <input type="text" placeholder="Search students, challenges..." value={searchValue} onChange={handleChange} className="bg-transparent focus:outline-none placeholder:text-gray-400 dark:placeholder:text-[#DFB6B2]/30 text-[#362A4A] dark:text-[#FBE4D8] w-full text-[15px] font-medium" />
+          <Search className="w-5 h-5 text-gray-500 dark:text-[#DFB6B2]/70 mr-3 shrink-0" />
+          <input type="text" placeholder="Search students, challenges..." value={searchValue} onChange={handleChange} className="bg-transparent focus:outline-none placeholder:text-gray-500 dark:placeholder:text-[#DFB6B2]/50 text-[#362A4A] dark:text-[#FBE4D8] w-full text-[15px] font-medium" />
         </label>
       </div>
 
@@ -69,14 +69,14 @@ export function TopNav({ onSearch, user, onProfileClick }: TopNavProps) {
             <div ref={popoverRef} className="absolute right-0 mt-4 w-80 bg-white/95 dark:bg-[#2B124C]/95 backdrop-blur-2xl rounded-[24px] shadow-2xl border border-white/20 dark:border-white/5 p-6 animate-in fade-in slide-in-from-top-2 duration-300">
               <div className="flex justify-between items-center mb-6">
                 <h4 className="text-[16px] font-black text-[#362A4A] dark:text-[#FBE4D8]">Notifications</h4>
-                <button onClick={() => setShowNotifications(false)} className="text-gray-400 hover:text-red-500 transition-colors"><X className="w-4 h-4" /></button>
+                <button onClick={() => setShowNotifications(false)} className="text-gray-500 dark:text-[#DFB6B2]/70 hover:text-red-500 transition-colors"><X className="w-4 h-4" /></button>
               </div>
               <div className="flex flex-col gap-4">
                 {MOCK_NOTIFICATIONS.map((n) => (
                   <div key={n.id} className="group cursor-pointer">
                     <h5 className="text-[14px] font-extrabold text-[#362A4A] dark:text-[#FBE4D8] group-hover:text-purple-400 transition-colors">{n.title}</h5>
-                    <p className="text-[12px] text-gray-500 dark:text-[#DFB6B2]/60 font-medium leading-snug">{n.desc}</p>
-                    <span className="text-[10px] text-gray-400 dark:text-[#DFB6B2]/40 font-bold uppercase tracking-widest mt-1 block">{n.time}</span>
+                    <p className="text-[12px] text-gray-600 dark:text-[#DFB6B2]/80 font-medium leading-snug">{n.desc}</p>
+                    <span className="text-[10px] text-gray-500 dark:text-[#DFB6B2]/60 font-bold uppercase tracking-widest mt-1 block">{n.time}</span>
                   </div>
                 ))}
               </div>
@@ -92,7 +92,7 @@ export function TopNav({ onSearch, user, onProfileClick }: TopNavProps) {
           <img src="https://i.pravatar.cc/150?img=1" alt={user.name} className="w-[40px] h-[40px] rounded-full object-cover border-[2px] border-white dark:border-[#2B124C] shadow-sm" />
           <div className="flex flex-col leading-tight">
             <span className="font-extrabold text-[14px] text-[#362A4A] dark:text-[#FBE4D8]">{user.name}</span>
-            <span className="text-[11px] text-gray-500 dark:text-[#DFB6B2]/60 font-semibold tracking-wide uppercase">Premium Student</span>
+            <span className="text-[11px] text-gray-600 dark:text-[#DFB6B2]/80 font-semibold tracking-wide uppercase">Active Student</span>
           </div>
         </div>
       </div>

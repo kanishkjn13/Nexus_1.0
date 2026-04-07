@@ -74,7 +74,7 @@ export function Footer() {
       {/* Bottom Bar */}
       <div className="max-w-[1400px] mx-auto pt-8 border-t border-black/5 dark:border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
         <p className="text-[14px] font-bold text-[#522B5B]/40 dark:text-[#DFB6B2]/40 flex items-center gap-2">
-          Made with <Heart className="w-4 h-4 text-pink-300 fill-pink-300" /> by Proofly Team
+          Empowering the next generation of global learners.
         </p>
         <p className="text-[14px] font-bold text-[#522B5B]/40 dark:text-[#DFB6B2]/40">
           © {currentYear} Proofly. All rights reserved.

@@ -34,13 +34,7 @@ interface Chat {
   date: Date;
 }
 
-const SUGGESTED_PROMPTS = [
-  "Explain Quantum Entanglement like I'm 5",
-  "Write an essay outline about Modern Art",
-  "Solve this Calculus differential equation",
-  "Summarize the latest research on CRISPR",
-  "How can I improve my study habits?"
-];
+
 
 export function AiView() {
   const [messages, setMessages] = useState<Message[]>([
@@ -52,11 +46,14 @@ export function AiView() {
     }
   ]);
   const [input, setInput] = useState('');
+  const [topic, setTopic] = useState('');
+  const [studyTime, setStudyTime] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const isInitialMount = useRef(true);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  const scrollToBottom = (smooth = true) => {
+    messagesEndRef.current?.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto' });
   };
 
   const handleNewSession = () => {
@@ -85,6 +82,10 @@ export function AiView() {
   };
 
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
     scrollToBottom();
   }, [messages, isTyping]);
 
@@ -94,12 +95,13 @@ export function AiView() {
     const userMessage: Message = {
       id: Date.now().toString(),
       role: 'user',
-      content: input,
+      content: `[Topic: ${topic}] [Time: ${studyTime}] ${input}`,
       timestamp: new Date()
     };
 
     setMessages(prev => [...prev, userMessage]);
     setInput('');
+    // Optionally reset topic/time or keep them for the session
     setIsTyping(true);
 
     // Simulate AI response
@@ -107,7 +109,7 @@ export function AiView() {
       const aiResponse: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: `That's a great question about "${input}"! As your academic assistant, I've analyzed your query. While I'm in beta mode, I can tell you that this topic is fascinating. Would you like a detailed breakdown or a quick summary?`,
+        content: `I've analyzed your goal for "${topic}" in the next ${studyTime}. Let's dive deep into the core concepts and maximize your efficiency. What's the specific part you'd like to start with?`,
         timestamp: new Date()
       };
       setMessages(prev => [...prev, aiResponse]);
@@ -138,7 +140,7 @@ export function AiView() {
           className="flex items-center justify-center gap-2 w-full py-4 bg-[#362A4A] dark:bg-[#FBE4D8] text-white dark:text-[#190019] rounded-2xl font-bold transition-all hover:scale-[1.02] active:scale-95 shadow-lg shadow-purple-900/10 mb-6"
         >
           <PlusCircle size={20} />
-          <span>New Session</span>
+          <span>New Chat</span>
         </button>
 
         <div className="flex-1 overflow-y-auto no-scrollbar">
@@ -163,14 +165,7 @@ export function AiView() {
           </div>
         </div>
 
-        <div className="mt-auto p-4 rounded-2xl bg-gradient-to-br from-[#854F6C] to-[#522B5B] text-white overflow-hidden relative">
-          <div className="relative z-10">
-            <h4 className="text-sm font-bold mb-1">Upgrade to Pro</h4>
-            <p className="text-[10px] opacity-70 mb-3">Get smarter responses & unlimited tokens.</p>
-            <button className="w-full py-2 bg-white/20 backdrop-blur-md rounded-lg text-xs font-bold transition-all hover:bg-white/30">Learn More</button>
-          </div>
-          <BrainCircuit className="absolute -right-4 -bottom-4 w-20 h-20 opacity-10 rotate-12" />
-        </div>
+
       </div>
 
       {/* Main Chat Area */}
@@ -183,7 +178,7 @@ export function AiView() {
               <History size={20} className="text-purple-600 dark:text-purple-400" />
             </div>
             <div>
-              <h2 className="text-lg font-black text-[#362A4A] dark:text-[#FBE4D8]">Session #482</h2>
+              <h2 className="text-lg font-black text-[#362A4A] dark:text-[#FBE4D8]">Chat #482</h2>
               <p className="text-xs text-[#522B5B]/50 dark:text-white/40">Active for 12 minutes • Academic Mode</p>
             </div>
           </div>
@@ -247,26 +242,7 @@ export function AiView() {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Prompt Suggestions */}
-          {messages.length < 3 && (
-            <div className="max-w-4xl mx-auto mt-12 grid grid-cols-2 gap-4">
-              {SUGGESTED_PROMPTS.map((prompt, i) => (
-                <button 
-                  key={i}
-                  onClick={() => setInput(prompt)}
-                  className="p-5 rounded-2xl bg-white/40 dark:bg-white/5 border border-white/60 dark:border-white/10 text-left hover:bg-white/80 dark:hover:bg-white/10 hover:scale-[1.02] transition-all group"
-                >
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="p-1.5 bg-purple-100 dark:bg-purple-900/30 rounded-lg text-purple-600 dark:text-purple-400">
-                      {i === 0 ? <Zap size={14} /> : i === 1 ? <FileText size={14} /> : <Lightbulb size={14} />}
-                    </div>
-                    <span className="text-[10px] font-black uppercase tracking-widest text-[#522B5B]/40 dark:text-white/40">Actionable</span>
-                  </div>
-                  <p className="text-sm font-bold text-[#362A4A] dark:text-[#FBE4D8]">{prompt}</p>
-                </button>
-              ))}
-            </div>
-          )}
+
         </div>
 
         {/* Input Area */}
@@ -274,34 +250,53 @@ export function AiView() {
           <div className="max-w-4xl mx-auto relative group">
             <div className="absolute -inset-1 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-amber-500/20 rounded-[2rem] blur-xl opacity-0 group-focus-within:opacity-100 transition-opacity duration-500" />
             
-            <div className="relative bg-white/80 dark:bg-[#190019]/80 backdrop-blur-2xl border border-[#522B5B]/10 dark:border-white/10 rounded-[2rem] p-3 flex items-center gap-2 shadow-2xl overflow-hidden shadow-purple-900/5">
-              <button 
-                onClick={simulateFileUpload}
-                className="p-3 text-[#522B5B]/40 dark:text-white/40 hover:text-purple-500 transition-colors"
-              >
-                <Paperclip size={20} />
-              </button>
+            <div className="relative bg-white/80 dark:bg-[#190019]/80 backdrop-blur-2xl border border-[#522B5B]/10 dark:border-white/10 rounded-[2rem] p-3 flex flex-col gap-2 shadow-2xl overflow-hidden shadow-purple-900/5">
+              <div className="flex gap-2 px-2 border-b border-black/5 dark:border-white/5 pb-2">
+                <div className="flex-1 flex items-center gap-2">
+                  <MessageSquare size={14} className="text-[#522B5B]/30 dark:text-white/30" />
+                  <input 
+                    type="text"
+                    placeholder="Topic (e.g. Calculus)"
+                    value={topic}
+                    onChange={(e) => setTopic(e.target.value)}
+                    className="w-full bg-transparent border-none outline-none py-1 text-xs font-black text-[#362A4A] dark:text-white placeholder-[#522B5B]/30 dark:placeholder-white/20"
+                  />
+                </div>
+                <div className="w-[1px] h-4 bg-black/5 dark:bg-white/5 self-center" />
+                <div className="w-32 flex items-center gap-2">
+                  <History size={14} className="text-[#522B5B]/30 dark:text-white/30" />
+                  <input 
+                    type="text"
+                    placeholder="Time (e.g. 15m)"
+                    value={studyTime}
+                    onChange={(e) => setStudyTime(e.target.value)}
+                    className="w-full bg-transparent border-none outline-none py-1 text-xs font-black text-[#362A4A] dark:text-white placeholder-[#522B5B]/30 dark:placeholder-white/20"
+                  />
+                </div>
+              </div>
               
-              <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                placeholder="Ask Proofly AI anything..."
-                className="flex-1 bg-transparent border-none outline-none py-3 px-2 text-[#362A4A] dark:text-white placeholder-[#522B5B]/30 dark:placeholder-white/30 font-bold"
-              />
-              
-              <div className="flex items-center gap-1 pr-2">
-                <button className="p-3 text-[#522B5B]/40 dark:text-white/40 hover:text-purple-500 transition-colors">
-                  <Mic size={20} />
-                </button>
-                <button 
-                  onClick={handleSendMessage}
-                  disabled={!input.trim()}
-                  className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#362A4A] to-[#522B5B] dark:from-[#522B5B] dark:to-[#854F6C] text-white flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-lg shadow-purple-900/20 disabled:opacity-50 disabled:scale-100"
-                >
-                  <Send size={20} fill="currentColor" className="ml-1" />
-                </button>
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && topic && studyTime && handleSendMessage()}
+                  placeholder="Ask Proofly AI anything..."
+                  className="flex-1 bg-transparent border-none outline-none py-3 px-3 text-[#362A4A] dark:text-white placeholder-[#522B5B]/30 dark:placeholder-white/30 font-bold"
+                />
+                
+                <div className="flex items-center gap-1 pr-2">
+                  <button className="p-3 text-[#522B5B]/40 dark:text-white/40 hover:text-purple-500 transition-colors">
+                    <Mic size={20} />
+                  </button>
+                  <button 
+                    onClick={handleSendMessage}
+                    disabled={!input.trim() || !topic.trim() || !studyTime.trim()}
+                    className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#362A4A] to-[#522B5B] dark:from-[#522B5B] dark:to-[#854F6C] text-white flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-lg shadow-purple-900/20 disabled:opacity-50 disabled:scale-100"
+                  >
+                    <Send size={20} fill="currentColor" className="ml-1" />
+                  </button>
+                </div>
               </div>
             </div>
             
