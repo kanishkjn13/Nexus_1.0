@@ -9,6 +9,7 @@ import { ProfileView } from './components/ProfileView';
 import { SettingsView } from './components/SettingsView';
 import { AiView } from './components/AiView';
 import { ChallengesView } from './components/ChallengesView';
+import { ProgressView } from './components/ProgressView';
 
 const VIEWS = {
   HOME: 'home',
@@ -61,12 +62,7 @@ export default function App() {
       case VIEWS.CHALLENGES:
         return <ChallengesView />;
       case VIEWS.PROGRESS:
-        return (
-          <div className="flex flex-col items-center justify-center p-20 text-center animate-in fade-in slide-in-from-bottom-5 duration-500">
-            <h2 className="text-4xl font-black text-[#362A4A] dark:text-[#FBE4D8] mb-4">Your Progress</h2>
-            <p className="text-[#522B5B]/70 dark:text-[#DFB6B2] font-semibold text-lg max-w-md">Detailed analytics and progress tracking will be available in the next update.</p>
-          </div>
-        );
+        return <ProgressView />;
       case VIEWS.AI:
         return <AiView />;
       case VIEWS.PROFILE:

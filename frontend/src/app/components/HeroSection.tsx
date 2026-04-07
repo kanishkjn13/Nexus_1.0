@@ -26,7 +26,7 @@ export function HeroSection() {
             <img
               src={isDark ? heroImage : heroImageDay}
               alt="Hero Artwork Full"
-              className="w-full h-full object-cover object-right-top opacity-100 transition-opacity duration-700"
+              className="w-full h-full object-contain object-right opacity-100 transition-opacity duration-700"
               style={{
                 // Proper blending to fade the image smoothly into the background extending further right
                 WebkitMaskImage: 'linear-gradient(to right, transparent 0%, transparent 40%, black 75%, black 100%)',
@@ -65,6 +65,7 @@ export function HeroSection() {
 
       {/* Floating Magic Elements */}
       <div className="absolute left-[35%] top-[15%] text-4xl transform -rotate-12 drop-shadow-2xl animate-pulse z-20 select-none">✨</div>
+      <div className="absolute right-[4%] bottom-[12%] text-3xl transform rotate-12 opacity-50 animate-bounce transition-all z-20 select-none" style={{ animationDuration: '5s' }}>⭐</div>
     </div>
   );
 }
