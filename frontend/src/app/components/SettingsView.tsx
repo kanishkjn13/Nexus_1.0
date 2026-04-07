@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Settings, Bell, Shield, Moon, Sun, HelpCircle, Globe, ChevronRight, CheckCircle2, Circle, Zap, CreditCard, UserMinus } from 'lucide-react';
+import { Settings, Bell, Shield, Moon, Sun, HelpCircle, CheckCircle2, Circle, Zap, CreditCard, UserMinus } from 'lucide-react';
 import { useTheme } from 'next-themes';
 
 export function SettingsView() {
@@ -88,22 +88,7 @@ export function SettingsView() {
                   </button>
                 </div>
 
-                {/* Language Select */}
-                <div className="flex items-center justify-between p-6 bg-white/40 dark:bg-black/20 rounded-[24px] border border-white/40 dark:border-white/5">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-cyan-100 dark:bg-cyan-500/10 flex items-center justify-center text-cyan-600 dark:text-cyan-400">
-                      <Globe className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <h4 className="font-black text-[#362A4A] dark:text-[#FBE4D8]">Language</h4>
-                      <p className="text-xs font-bold text-gray-400 dark:text-[#DFB6B2]/40">Select your preferred language</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2 bg-white/20 dark:bg-white/5 px-4 py-2 rounded-xl border border-white/20 cursor-pointer">
-                    <span className="text-sm font-bold text-[#362A4A] dark:text-[#FBE4D8]">English (US)</span>
-                    <ChevronRight className="w-4 h-4 text-gray-400" />
-                  </div>
-                </div>
+
 
                 {/* Help Section Button */}
                 <div className="flex items-center justify-between p-6 bg-white/40 dark:bg-black/20 rounded-[24px] border border-white/40 dark:border-white/5">

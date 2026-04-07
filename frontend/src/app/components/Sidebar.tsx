@@ -1,5 +1,6 @@
 import { Home, Trophy, Target, Sparkles, User, Settings, LogOut, Zap } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useTheme } from 'next-themes';
 
 const navItems = [
   { id: 'home', icon: Home, label: 'Home' },
@@ -17,14 +18,18 @@ interface SidebarProps {
 
 export function Sidebar({ activeView, onNavigate, onLogout }: SidebarProps) {
   const [mounted, setMounted] = useState(false);
+  const { theme } = useTheme();
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  if (!mounted) return null;
+
   return (
     <div className="w-[240px] fixed left-0 top-0 h-screen flex flex-col items-center py-6 bg-transparent z-50">
-      <div className="bg-[#190019] rounded-[32px] w-[200px] h-[calc(100vh-48px)] flex flex-col py-8 justify-between shadow-2xl shadow-black/60 border border-white/5 transition-colors duration-300 overflow-y-auto no-scrollbar">
+      <div className="bg-gradient-to-br from-white/90 via-[#FBE4D8]/80 to-[#DFB6B2]/70 dark:bg-none dark:bg-[#190019] rounded-[32px] w-[200px] h-[calc(100vh-48px)] flex flex-col py-8 justify-between shadow-2xl shadow-black/10 dark:shadow-black/60 border border-white/60 dark:border-white/5 transition-all duration-500 backdrop-blur-xl overflow-y-auto no-scrollbar">
+
         
         {/* Top Section */}
         <div className="flex flex-col gap-2 w-full px-4">
