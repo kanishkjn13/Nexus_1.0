@@ -30,7 +30,7 @@ export function HeroSection({ onStartSession }: HeroSectionProps) {
             <img
               src={isDark ? heroImage : heroImageDay}
               alt="Hero Artwork Full"
-              className="w-full h-full object-contain object-right opacity-100 transition-opacity duration-700"
+              className="absolute inset-0 w-full h-full object-cover object-[right_20%] opacity-100 transition-opacity duration-700"
               style={{
                 // Proper blending to fade the image smoothly into the background extending further right
                 WebkitMaskImage: 'linear-gradient(to right, transparent 0%, transparent 40%, black 75%, black 100%)',
@@ -62,7 +62,7 @@ export function HeroSection({ onStartSession }: HeroSectionProps) {
           Keep your momentum and reach your goals.
         </p>
 
-        <button 
+        <button
           onClick={onStartSession}
           className="bg-gradient-to-r from-[#DAB8FF] via-[#C9A0FF] to-[#DAB8FF] dark:from-[#522B5B] dark:via-[#854F6C] dark:to-[#522B5B] bg-[length:200%_auto] hover:bg-right text-[#362A4A] dark:text-[#FBE4D8] font-extrabold text-[14px] px-8 py-3 rounded-full w-fit shadow-2xl shadow-purple-300/20 dark:shadow-black/60 hover:scale-[0.98] active:scale-[0.95] transition-all duration-500 border border-white/50 dark:border-white/10 inline-flex items-center gap-3"
         >
@@ -72,7 +72,6 @@ export function HeroSection({ onStartSession }: HeroSectionProps) {
 
       {/* Floating Magic Elements */}
       <div className="absolute left-[35%] top-[15%] text-4xl transform -rotate-12 drop-shadow-2xl animate-pulse z-20 select-none">✨</div>
-      <div className="absolute right-[4%] bottom-[12%] text-3xl transform rotate-12 opacity-50 animate-bounce transition-all z-20 select-none" style={{ animationDuration: '5s' }}>⭐</div>
     </div>
   );
 }
