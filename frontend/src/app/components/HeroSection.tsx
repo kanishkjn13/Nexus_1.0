@@ -6,7 +6,11 @@ import heroImageDay from '../../assets/active_session_hero_day.png';
 import { useEffect, useState } from 'react';
 import { ChevronRight } from 'lucide-react';
 
-export function HeroSection() {
+interface HeroSectionProps {
+  onStartSession: () => void;
+}
+
+export function HeroSection({ onStartSession }: HeroSectionProps) {
   const { theme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -58,8 +62,11 @@ export function HeroSection() {
           Keep your momentum and reach your goals.
         </p>
 
-        <button className="bg-gradient-to-r from-[#DAB8FF] via-[#C9A0FF] to-[#DAB8FF] dark:from-[#522B5B] dark:via-[#854F6C] dark:to-[#522B5B] bg-[length:200%_auto] hover:bg-right text-[#362A4A] dark:text-[#FBE4D8] font-extrabold text-[14px] px-8 py-3 rounded-full w-fit shadow-2xl shadow-purple-300/20 dark:shadow-black/60 hover:scale-[0.98] active:scale-[0.95] transition-all duration-500 border border-white/50 dark:border-white/10 inline-flex items-center gap-3">
-          Start Test <ChevronRight className="w-5 h-5" />
+        <button 
+          onClick={onStartSession}
+          className="bg-gradient-to-r from-[#DAB8FF] via-[#C9A0FF] to-[#DAB8FF] dark:from-[#522B5B] dark:via-[#854F6C] dark:to-[#522B5B] bg-[length:200%_auto] hover:bg-right text-[#362A4A] dark:text-[#FBE4D8] font-extrabold text-[14px] px-8 py-3 rounded-full w-fit shadow-2xl shadow-purple-300/20 dark:shadow-black/60 hover:scale-[0.98] active:scale-[0.95] transition-all duration-500 border border-white/50 dark:border-white/10 inline-flex items-center gap-3"
+        >
+          Start Session <ChevronRight className="w-5 h-5" />
         </button>
       </div>
 

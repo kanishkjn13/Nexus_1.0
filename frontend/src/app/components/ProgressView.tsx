@@ -176,44 +176,78 @@ export function ProgressView() {
           title="Study Streak" 
           subtitle="Your daily study activity for the past 7 days."
         >
-          <div className="h-[280px] w-full mt-4">
+          <div className="h-[300px] w-full mt-6 relative">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={STREAK_DATA} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
+              <BarChart 
+                data={STREAK_DATA} 
+                margin={{ top: 20, right: 10, left: -20, bottom: 0 }}
+                barGap={8}
+              >
+                <defs>
+                  <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#a855f7" stopOpacity={1} />
+                    <stop offset="100%" stopColor="#8b5cf6" stopOpacity={0.8} />
+                  </linearGradient>
+                  <linearGradient id="todayBarGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#f472b6" stopOpacity={1} />
+                    <stop offset="100%" stopColor="#ec4899" stopOpacity={1} />
+                  </linearGradient>
+                  <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feGaussianBlur stdDeviation="3" result="blur" />
+                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                  </filter>
+                </defs>
+                <CartesianGrid strokeDasharray="8 8" vertical={false} stroke="rgba(255,255,255,0.03)" />
                 <XAxis 
                   dataKey="day" 
                   axisLine={false} 
                   tickLine={false} 
-                  tick={{ fill: '#A19DAB', fontSize: 11, fontWeight: 'bold' }} 
-                  dy={10}
+                  tick={{ fill: '#A19DAB', fontSize: 12, fontWeight: '900' }} 
+                  dy={15}
                 />
                 <YAxis 
                   axisLine={false} 
                   tickLine={false} 
                   tick={{ fill: '#A19DAB', fontSize: 11, fontWeight: 'bold' }} 
                 />
-                <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(255,255,255,0.02)' }} />
+                <Tooltip 
+                  content={<CustomTooltip />} 
+                  cursor={{ fill: 'white', fillOpacity: 0.03, radius: 12 }} 
+                />
                 <Bar 
                   dataKey="xp" 
-                  radius={[8, 8, 0, 0]} 
-                  animationDuration={1500}
+                  radius={[12, 12, 12, 12]} 
+                  barSize={32}
+                  animationDuration={2000}
+                  animationEasing="ease-out"
                 >
                   {STREAK_DATA.map((entry, index) => (
                     <Cell 
                       key={`cell-${index}`} 
-                      fill={entry.today ? 'url(#todayGradient)' : entry.high ? '#a855f7' : '#8b5cf6'} 
-                      opacity={entry.today ? 1 : 0.8}
+                      fill={entry.today ? 'url(#todayBarGradient)' : 'url(#barGradient)'}
+                      style={{ 
+                        filter: entry.today ? 'drop-shadow(0 0 8px rgba(236,72,153,0.4))' : 'none',
+                        transition: 'all 0.3s ease'
+                      }}
                     />
                   ))}
                 </Bar>
-                <defs>
-                  <linearGradient id="todayGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#f472b6" stopOpacity={1} />
-                    <stop offset="100%" stopColor="#ec4899" stopOpacity={1} />
-                  </linearGradient>
-                </defs>
               </BarChart>
             </ResponsiveContainer>
+          </div>
+          
+          <div className="flex justify-between items-center mt-6 px-2 pt-6 border-t border-white/5">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-gradient-to-br from-purple-400 to-indigo-600 shadow-lg" />
+              <span className="text-[11px] font-black text-[#362A4A]/60 dark:text-[#DFB6B2]/60 uppercase tracking-widest">Normal Day</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-gradient-to-br from-pink-400 to-rose-600 shadow-lg" />
+              <span className="text-[11px] font-black text-[#362A4A]/60 dark:text-[#DFB6B2]/60 uppercase tracking-widest">Today</span>
+            </div>
+            <div className="text-[13px] font-black text-purple-500">
+              Avg: 61 XP
+            </div>
           </div>
         </Card>
 

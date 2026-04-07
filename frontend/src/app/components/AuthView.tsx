@@ -1,5 +1,11 @@
 import { useState } from 'react';
-import { Zap, Mail, Lock, User, Github, Chrome, ArrowRight, ChevronLeft } from 'lucide-react';
+import { Zap, Mail, Lock, User, ArrowRight, ChevronLeft, HelpCircle } from 'lucide-react';
+
+const MOCK_USERS = [
+  { email: 'kanishk@example.com', password: 'password123', name: 'Kanishk Jain' },
+  { email: 'emma@example.com', password: 'password123', name: 'Emma Roberts' },
+  { email: 'test@test.com', password: 'test', name: 'Test User' }
+];
 
 interface AuthViewProps {
   onLogin: (user: { name: string; email: string }) => void;
@@ -25,11 +31,34 @@ export function AuthView({ onLogin }: AuthViewProps) {
 
     setLoading(true);
     
-    // Mock authentication delay
+    // Mock authentication check
     setTimeout(() => {
       setLoading(false);
-      onLogin?.({ name: isLogin ? 'Emma Roberts' : name, email });
-    }, 1500);
+      
+      if (isLogin) {
+        const foundUser = MOCK_USERS.find(u => u.email === email);
+        
+        if (!foundUser) {
+          setError('Account not found. Redirecting to sign up...');
+          setTimeout(() => {
+            setIsLogin(false);
+            setName('');
+            setError('');
+          }, 1500);
+          return;
+        }
+
+        if (foundUser.password !== password) {
+          setError('Wrong Password');
+          return;
+        }
+
+        onLogin?.({ name: foundUser.name, email: foundUser.email });
+      } else {
+        // Mock Sign Up
+        onLogin?.({ name, email });
+      }
+    }, 1200);
   };
 
   return (
@@ -68,7 +97,7 @@ export function AuthView({ onLogin }: AuthViewProps) {
                 +2k
               </div>
             </div>
-            <p className="text-[14px] font-black uppercase tracking-widest text-[#DFB6B2]/40 italic">
+            <p className="text-[14px] font-black uppercase tracking-widest text-white/40 italic">
               "The best education platform I've ever used." — Sarah J.
             </p>
           </div>
@@ -78,10 +107,10 @@ export function AuthView({ onLogin }: AuthViewProps) {
         <div className="p-8 md:p-12 lg:p-16 flex flex-col justify-center bg-white/5 lg:bg-transparent">
           <div className="w-full max-w-[400px] mx-auto">
             <div className="mb-10 text-center lg:text-left">
-              <h2 className="text-[32px] font-black text-[#FBE4D8] mb-2">
+              <h2 className="text-[32px] font-black text-white mb-2">
                 {isLogin ? 'Welcome Back!' : 'Get Started'}
               </h2>
-              <p className="text-[#DFB6B2]/60 font-bold text-[15px]">
+              <p className="text-white/60 font-bold text-[15px]">
                 {isLogin ? 'Sign in to continue your journey.' : 'Create your account and join the community.'}
               </p>
             </div>
@@ -95,34 +124,46 @@ export function AuthView({ onLogin }: AuthViewProps) {
                     placeholder="Full Name" 
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full h-14 rounded-2xl pl-12 pr-6 bg-white/5 border border-white/10 focus:outline-none focus:ring-2 focus:ring-[#522B5B] dark:text-[#FBE4D8] font-bold text-[15px] transition-all"
+                    className="w-full h-14 rounded-2xl pl-12 pr-6 bg-white/5 border border-white/10 focus:outline-none focus:ring-2 focus:ring-[#522B5B] text-white font-bold text-[15px] transition-all"
                   />
                 </div>
               )}
 
               <div className="relative group">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#DFB6B2]/30 group-focus-within:text-[#854F6C] transition-colors" />
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30 group-focus-within:text-white/60 transition-colors" />
                 <input 
                   type="email" 
                   placeholder="name@email.com" 
                   autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full h-14 rounded-2xl pl-12 pr-6 bg-white/5 border border-white/10 focus:outline-none focus:ring-2 focus:ring-[#522B5B] dark:text-[#FBE4D8] font-bold text-[15px] transition-all"
+                  className="w-full h-14 rounded-2xl pl-12 pr-6 bg-white/5 border border-white/10 focus:outline-none focus:ring-2 focus:ring-[#522B5B] text-white font-bold text-[15px] transition-all"
                 />
               </div>
 
               <div className="relative group">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#DFB6B2]/30 group-focus-within:text-[#854F6C] transition-colors" />
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30 group-focus-within:text-white/60 transition-colors" />
                 <input 
                   type="password" 
                   placeholder="••••••••" 
                   autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full h-14 rounded-2xl pl-12 pr-6 bg-white/5 border border-white/10 focus:outline-none focus:ring-2 focus:ring-[#522B5B] dark:text-[#FBE4D8] font-bold text-[15px] transition-all"
+                  className="w-full h-14 rounded-2xl pl-12 pr-6 bg-white/5 border border-white/10 focus:outline-none focus:ring-2 focus:ring-[#522B5B] text-white font-bold text-[15px] transition-all"
                 />
               </div>
+
+              {isLogin && (
+                <div className="flex justify-end -mt-2">
+                  <button 
+                    type="button"
+                    onClick={() => setError('Password reset link sent to your email!')}
+                    className="text-[12px] font-black text-white/40 hover:text-white transition-colors flex items-center gap-1.5 px-1"
+                  >
+                    <HelpCircle className="w-3.5 h-3.5" /> Forgot Password?
+                  </button>
+                </div>
+              )}
 
               {error && (
                 <p className="text-red-400 text-[13px] font-black px-1 animate-pulse">{error}</p>
@@ -147,24 +188,15 @@ export function AuthView({ onLogin }: AuthViewProps) {
             <div className="mt-8 flex flex-col gap-6 items-center">
               <div className="flex items-center gap-4 w-full text-gray-400/20">
                 <div className="h-[1px] bg-white/5 flex-1" />
-                <span className="text-[12px] font-black text-[#DFB6B2]/30 uppercase tracking-[0.2em]">Or continue with</span>
+                <span className="text-[12px] font-black text-white/30 uppercase tracking-[0.2em]">Authentic Access</span>
                 <div className="h-[1px] bg-white/5 flex-1" />
               </div>
 
-              <div className="flex gap-4 w-full">
-                <button className="flex-1 h-12 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all flex items-center justify-center gap-2 text-[#DFB6B2] text-[14px] font-black group">
-                  <Github className="w-5 h-5 group-hover:scale-110 transition-transform" /> GitHub
-                </button>
-                <button className="flex-1 h-12 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all flex items-center justify-center gap-2 text-[#DFB6B2] text-[14px] font-black group">
-                  <Chrome className="w-5 h-5 group-hover:scale-110 transition-transform" /> Google
-                </button>
-              </div>
-
-              <p className="text-[14px] font-bold text-[#DFB6B2]/40">
+              <p className="text-[14px] font-bold text-white/40">
                 {isLogin ? "Don't have an account?" : "Already have an account?"}
                 <button 
                   onClick={() => { setIsLogin(!isLogin); setError(''); }}
-                  className="ml-2 text-[#FBE4D8] font-black hover:text-[#854F6C] transition-colors underline underline-offset-4"
+                  className="ml-2 text-white font-black hover:text-white/80 transition-colors underline underline-offset-4"
                 >
                   {isLogin ? 'Sign Up' : 'Log In'}
                 </button>
@@ -177,3 +209,4 @@ export function AuthView({ onLogin }: AuthViewProps) {
     </div>
   );
 }
+

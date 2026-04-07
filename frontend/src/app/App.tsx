@@ -8,6 +8,7 @@ import { AuthView } from './components/AuthView';
 import { ProfileView } from './components/ProfileView';
 import { SettingsView } from './components/SettingsView';
 import { AiView } from './components/AiView';
+import { AboutView } from './components/AboutView';
 import { ChallengesView } from './components/ChallengesView';
 import { ProgressView } from './components/ProgressView';
 
@@ -17,7 +18,8 @@ const VIEWS = {
   PROGRESS: 'progress',
   AI: 'ai',
   SETTINGS: 'settings',
-  PROFILE: 'profile'
+  PROFILE: 'profile',
+  ABOUT: 'about'
 };
 
 interface UserProfile {
@@ -55,7 +57,7 @@ export default function App() {
       case VIEWS.HOME:
         return (
           <>
-            <HeroSection />
+            <HeroSection onStartSession={() => navigateTo(VIEWS.AI)} />
             <DashboardCards searchQuery={searchQuery} />
           </>
         );
@@ -65,6 +67,8 @@ export default function App() {
         return <ProgressView />;
       case VIEWS.AI:
         return <AiView />;
+      case VIEWS.ABOUT:
+        return <AboutView />;
       case VIEWS.PROFILE:
         return user ? (
           <ProfileView user={user} onUpdateUser={onLogin} />

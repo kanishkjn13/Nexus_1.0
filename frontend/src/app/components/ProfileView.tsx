@@ -1,5 +1,16 @@
 import { useState } from 'react';
-import { User, Mail, Phone, MapPin, GraduationCap, Award, Settings, Bell, Shield, LogOut, Camera, Save, CheckCircle2, Circle } from 'lucide-react';
+import { User, Mail, Phone, MapPin, GraduationCap, Award, Settings, Bell, Shield, LogOut, Camera, Save, CheckCircle2, Circle, ChevronDown } from 'lucide-react';
+
+const COUNTRY_CODES = [
+  { code: '+91', name: 'India', flag: '🇮🇳' },
+  { code: '+1', name: 'USA', flag: '🇺🇸' },
+  { code: '+44', name: 'UK', flag: '🇬🇧' },
+  { code: '+61', name: 'Australia', flag: '🇦🇺' },
+  { code: '+81', name: 'Japan', flag: '🇯🇵' },
+  { code: '+49', name: 'Germany', flag: '🇩🇪' },
+  { code: '+33', name: 'France', flag: '🇫🇷' },
+  { code: '+971', name: 'UAE', flag: '🇦🇪' },
+];
 
 interface UserProfile {
   name: string;
@@ -16,7 +27,8 @@ export function ProfileView({ user, onUpdateUser }: ProfileViewProps) {
   const [formData, setFormData] = useState({
     name: user.name,
     email: user.email,
-    phone: '+1 (555) 000-0000',
+    countryCode: '+91',
+    phone: '98765 43210',
     bio: 'Passionate student exploring Discrete Mathematics and OS Theory. Goal: Top 5% of students worldwide.',
     gender: 'prefer-not-to-say', // Requirement
     course: 'Computer Science',
@@ -37,8 +49,7 @@ export function ProfileView({ user, onUpdateUser }: ProfileViewProps) {
   };
 
   const tabs = [
-    { id: 'personal', label: 'Personal Info', icon: User },
-    { id: 'academic', label: 'Academic Details', icon: GraduationCap }
+    { id: 'personal', label: 'Personal Info', icon: User }
   ];
 
   return (
@@ -63,15 +74,11 @@ export function ProfileView({ user, onUpdateUser }: ProfileViewProps) {
         <div className="flex-1 text-center md:text-left z-10">
           <div className="flex flex-col md:flex-row md:items-center gap-2 mb-2">
             <h1 className="text-3xl font-black text-[#362A4A] dark:text-[#FBE4D8]">{formData.name}</h1>
-            <span className="w-fit mx-auto md:mx-0 px-3 py-1 bg-[#854F6C]/20 text-[#522B5B] dark:text-[#DFB6B2] border border-[#854F6C]/30 rounded-full text-[12px] font-black uppercase tracking-wider">Premium Member</span>
           </div>
           <p className="text-[#362A4A]/60 dark:text-[#DFB6B2]/60 font-bold text-[15px] mb-4">Level 7 Student · 1,645 XP earned</p>
           <div className="flex flex-wrap justify-center md:justify-start gap-4">
             <div className="flex items-center gap-2 text-[#362A4A]/60 dark:text-[#DFB6B2]/50 text-[13px] font-bold">
               <Mail className="w-4 h-4" /> {formData.email}
-            </div>
-            <div className="flex items-center gap-2 text-[#362A4A]/60 dark:text-[#DFB6B2]/50 text-[13px] font-bold">
-              <MapPin className="w-4 h-4" /> San Francisco, CA
             </div>
           </div>
         </div>
@@ -93,28 +100,10 @@ export function ProfileView({ user, onUpdateUser }: ProfileViewProps) {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         
-        {/* Sidebar Nav */}
-        <div className="lg:col-span-3">
-          <div className="bg-white/50 dark:bg-[#2B124C]/40 backdrop-blur-xl rounded-[28px] border border-white/60 dark:border-white/10 p-4 flex flex-col gap-2 shadow-sm">
-            {tabs.map((tab) => {
-              const Icon = tab.icon;
-              const isActive = activeTab === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-4 px-6 py-4 rounded-2xl font-bold text-[15px] transition-all ${isActive ? 'bg-[#522B5B]/20 dark:bg-[#522B5B]/30 text-[#522B5B] dark:text-[#FBE4D8] shadow-sm' : 'text-[#362A4A]/50 dark:text-[#DFB6B2]/50 hover:bg-[#522B5B]/10 dark:hover:bg-white/5 hover:text-[#522B5B] dark:hover:text-[#FBE4D8]'}`}
-                >
-                  <Icon className={`w-5 h-5 ${isActive ? 'text-[#854F6C] dark:text-[#FBE4D8]' : 'text-inherit'}`} />
-                  {tab.label}
-                </button>
-              );
-            })}
-          </div>
-        </div>
+
 
         {/* Content Section */}
-        <div className="lg:col-span-9 bg-white/50 dark:bg-[#2B124C]/40 backdrop-blur-xl rounded-[32px] border border-white/60 dark:border-white/10 p-10 shadow-sm relative overflow-hidden">
+        <div className="lg:col-span-12 bg-white/50 dark:bg-[#2B124C]/40 backdrop-blur-xl rounded-[32px] border border-white/60 dark:border-white/10 p-10 shadow-sm relative overflow-hidden">
           
           {activeTab === 'personal' && (
             <div className="flex flex-col gap-10">
@@ -143,12 +132,27 @@ export function ProfileView({ user, onUpdateUser }: ProfileViewProps) {
                 </div>
                 <div className="flex flex-col gap-3">
                   <label className="text-[13px] font-black text-[#522B5B] dark:text-[#DFB6B2]/70 uppercase tracking-widest pl-2">Phone Number</label>
-                  <input 
-                    className="w-full h-14 rounded-2xl px-6 bg-white/60 dark:bg-black/20 border border-[#854F6C]/20 dark:border-white/5 focus:outline-none focus:ring-2 focus:ring-[#854F6C] font-bold text-[#362A4A] dark:text-[#FBE4D8] placeholder:text-[#362A4A]/30 dark:placeholder:text-[#DFB6B2]/30 transition-all"
-                    autoComplete="tel"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                  />
+                  <div className="flex gap-2">
+                    <div className="relative shrink-0">
+                      <select 
+                        className="appearance-none h-14 w-[110px] rounded-2xl pl-4 pr-10 bg-white/60 dark:bg-black/20 border border-[#854F6C]/20 dark:border-white/5 focus:outline-none focus:ring-2 focus:ring-[#854F6C] font-bold text-[#362A4A] dark:text-[#FBE4D8] transition-all cursor-pointer"
+                        value={formData.countryCode}
+                        onChange={(e) => setFormData({...formData, countryCode: e.target.value})}
+                      >
+                        {COUNTRY_CODES.map(c => (
+                          <option key={c.code} value={c.code}>{c.flag} {c.code}</option>
+                        ))}
+                      </select>
+                      <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none text-gray-400" />
+                    </div>
+                    <input 
+                      type="text" 
+                      className="flex-1 h-14 rounded-2xl px-6 bg-white/60 dark:bg-black/20 border border-[#854F6C]/20 dark:border-white/5 focus:outline-none focus:ring-2 focus:ring-[#854F6C] font-bold text-[#362A4A] dark:text-[#FBE4D8] placeholder:text-[#362A4A]/30 dark:placeholder:text-[#DFB6B2]/30 transition-all"
+                      autoComplete="tel"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                    />
+                  </div>
                 </div>
 
                 {/* Gender Selection */}
@@ -185,13 +189,7 @@ export function ProfileView({ user, onUpdateUser }: ProfileViewProps) {
             </div>
           )}
 
-          {activeTab !== 'personal' && (
-            <div className="flex flex-col items-center justify-center py-20 text-center animate-in fade-in duration-500">
-               <Award className="w-20 h-20 text-[#854F6C]/20 dark:text-[#DFB6B2]/10 mb-6" />
-               <h4 className="text-2xl font-black text-[#362A4A] dark:text-[#FBE4D8] mb-2">Section Coming Soon</h4>
-               <p className="text-[#362A4A]/60 dark:text-[#DFB6B2]/60 font-bold max-w-sm">We're still polishing the {activeTab} section to bring you the best experience.</p>
-            </div>
-          )}
+
         </div>
       </div>
     </div>
