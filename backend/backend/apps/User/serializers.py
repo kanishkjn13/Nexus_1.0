@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 User = get_user_model()
 
@@ -9,7 +10,11 @@ class SignupSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ("email", "name", "password")
+        fields = (
+            "email",
+            "name",
+            "password",
+        )
 
     def create(self, validated_data):
         return User.objects.create_user(**validated_data)
@@ -18,4 +23,8 @@ class SignupSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("id", "email", "name", "created_at")
+        fields = ("id", "email", "name", "created_at", "user_image")
+
+
+class CustomTokenSerializer(TokenObtainPairSerializer):
+    username_field = "email"
