@@ -2,9 +2,9 @@ import { Trophy, Zap, CheckCircle2, ChevronRight, MoreHorizontal, Gift, Link as 
 import { useState, useMemo } from 'react';
 
 const INITIAL_STUDENTS = [
-  { name: 'Lily K.', level: 7, xp: 1645, img: 'https://i.pravatar.cc/150?img=5', rank: '🥇', top: true, color: 'from-amber-200 to-orange-300' },
-  { name: 'Umar M.', level: 6, xp: 1350, img: 'https://i.pravatar.cc/150?img=8', rank: '🥈', top: false, color: 'from-cyan-200 to-blue-300' },
-  { name: 'Priya S.', level: 6, xp: 1235, img: 'https://i.pravatar.cc/150?img=9', rank: '🥉', top: false, color: 'from-purple-200 to-pink-300' },
+  { name: 'Lily K.', level: 7, xp: 1645, img: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Lily', rank: '🥇', top: true, color: 'from-amber-200 to-orange-300' },
+  { name: 'Umar M.', level: 6, xp: 1350, img: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Umar', rank: '🥈', top: false, color: 'from-cyan-200 to-blue-300' },
+  { name: 'Priya S.', level: 6, xp: 1235, img: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Priya', rank: '🥉', top: false, color: 'from-purple-200 to-pink-300' },
 ];
 
 function Card({ children, className = '' }: { children: React.ReactNode, className?: string }) {
@@ -73,7 +73,7 @@ export function DashboardCards({ searchQuery = '' }) {
 
           <Label>Continue Studying</Label>
           <div className="flex -space-x-2">
-            {[1, 2, 3].map(i => <div key={i} className="w-5 h-5 rounded-full border-2 border-white dark:border-[#2B124C] bg-gray-200 dark:bg-gray-800 overflow-hidden"><img src={`https://i.pravatar.cc/50?img=${i + 20}`} alt="user" /></div>)}
+            {[1, 2, 3].map(i => <div key={i} className="w-5 h-5 rounded-full border-2 border-white dark:border-[#2B124C] bg-gray-200 dark:bg-gray-800 overflow-hidden"><img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=user${i}`} alt="user" /></div>)}
           </div>
         </div>
 
@@ -254,7 +254,7 @@ export function DashboardCards({ searchQuery = '' }) {
               </div>
               <div className="flex justify-between items-center">
                 <div className="flex -space-x-1">
-                  {[1, 2, 3].map(i => <img key={i} src={`https://i.pravatar.cc/50?img=${i + 10}`} className="w-4 h-4 rounded-full border border-white dark:border-[#190019]" alt="av" />)}
+                  {[1, 2, 3].map(i => <img key={i} src={`https://api.dicebear.com/7.x/avataaars/svg?seed=av${i}`} className="w-4 h-4 rounded-full border border-white dark:border-[#190019]" alt="av" />)}
                 </div>
                 <button
                   onClick={() => toggleTask((urgentTask as any).id)}

@@ -32,6 +32,7 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [user, setUser] = useState<UserProfile | null>(null);
   const [isAuthMounted, setIsAuthMounted] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // On mount
   useEffect(() => {
@@ -103,12 +104,23 @@ export default function App() {
       <div className="absolute bottom-[20%] right-[20%] w-[35vw] h-[35vw] bg-amber-200/10 dark:bg-amber-500/10 rounded-full blur-[90px] pointer-events-none animate-float" style={{ animationDelay: '2s' }} />
 
 
-      <Sidebar activeView={activeView} onNavigate={navigateTo} onLogout={onLogout} />
+      <Sidebar 
+        activeView={activeView} 
+        onNavigate={(view) => { navigateTo(view); setIsSidebarOpen(false); }} 
+        onLogout={onLogout} 
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+      />
       
-      <div className="ml-[240px] h-screen overflow-y-auto overscroll-y-contain scroll-smooth main-scroll relative z-10 flex flex-col no-scrollbar">
-        <TopNav onSearch={setSearchQuery} user={user} onProfileClick={() => navigateTo(VIEWS.PROFILE)} />
+      <div className={`transition-all duration-300 ${isSidebarOpen ? 'lg:ml-[240px]' : 'ml-0 lg:ml-[240px]'} h-screen overflow-y-auto overscroll-y-contain scroll-smooth main-scroll relative z-10 flex flex-col no-scrollbar`}>
+        <TopNav 
+          onSearch={setSearchQuery} 
+          user={user} 
+          onProfileClick={() => navigateTo(VIEWS.PROFILE)} 
+          onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)}
+        />
         
-        <main className="flex-1 px-10 pb-16 max-w-[1600px] w-full mx-auto">
+        <main className="flex-1 px-4 md:px-10 pb-16 max-w-[1600px] w-full mx-auto transition-all">
           {renderView}
           <Footer />
         </main>
