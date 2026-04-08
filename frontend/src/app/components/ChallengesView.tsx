@@ -151,9 +151,9 @@ export function ChallengesView() {
 
           <div className="flex flex-col gap-1.5">
             {[
-              { rank: 1, name: "Lily K.", lvl: 7, xp: "2,450 XP", img: "https://i.pravatar.cc/150?u=1" },
-              { rank: 2, name: "Umar M.", lvl: 6, xp: "2,150 XP", img: "https://i.pravatar.cc/150?u=2" },
-              { rank: 3, name: "Emma R. (You)", lvl: 7, xp: "1,980 XP", img: "https://i.pravatar.cc/150?u=4", isYou: true },
+              { rank: 1, name: "Lily K.", lvl: 7, xp: "2,450 XP", img: "https://api.dicebear.com/7.x/avataaars/svg?seed=Lily" },
+              { rank: 2, name: "Umar M.", lvl: 6, xp: "2,150 XP", img: "https://api.dicebear.com/7.x/avataaars/svg?seed=Umar" },
+              { rank: 3, name: "Emma R. (You)", lvl: 7, xp: "1,980 XP", img: "https://api.dicebear.com/7.x/avataaars/svg?seed=Emma", isYou: true },
             ].map((user) => (
               <div key={user.rank} className={`flex items-center gap-3 p-2 rounded-xl transition-colors ${user.isYou ? 'bg-purple-100 dark:bg-purple-600/20 border border-purple-200 dark:border-purple-500/30' : 'hover:bg-[#522B5B]/5 dark:hover:bg-white/5 border border-transparent'}`}>
                 <div className="w-6 text-center font-bold text-purple-900/40 dark:text-gray-400 flex justify-center text-sm">

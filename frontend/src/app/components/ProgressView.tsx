@@ -122,12 +122,12 @@ export function ProgressView() {
     <div className="flex flex-col gap-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
       
       {/* Header View */}
-      <div className="flex justify-between items-end">
+      <div className="flex flex-col sm:flex-row justify-between sm:items-end gap-4">
         <div>
-          <h1 className="text-[36px] font-black text-[#362A4A] dark:text-[#FBE4D8] leading-tight mb-2">Your Progress</h1>
-          <p className="text-[#522B5B]/60 dark:text-[#A19DAB] font-semibold text-[15px]">Track your learning journey and celebrate every step forward.</p>
+          <h1 className="text-[28px] md:text-[36px] font-black text-[#362A4A] dark:text-[#FBE4D8] leading-tight mb-2">Your Progress</h1>
+          <p className="text-[#522B5B]/60 dark:text-[#A19DAB] font-semibold text-[14px] md:text-[15px]">Track your learning journey and celebrate every step forward.</p>
         </div>
-        <button className="flex items-center gap-2 bg-white/40 dark:bg-[#2B124C]/40 backdrop-blur-md px-4 py-2.5 rounded-xl border border-white/60 dark:border-white/10 shadow-sm text-[#362A4A] dark:text-[#FBE4D8] font-black text-[13px] hover:scale-105 transition-all">
+        <button className="flex items-center gap-2 bg-white/40 dark:bg-[#2B124C]/40 backdrop-blur-md px-4 py-2.5 rounded-xl border border-white/60 dark:border-white/10 shadow-sm text-[#362A4A] dark:text-[#FBE4D8] font-black text-[13px] hover:scale-105 transition-all w-fit">
           <CalendarIcon className="w-4 h-4 text-[#8b5cf6]" />
           This Week
           <ChevronDown className="w-4 h-4 opacity-50" />

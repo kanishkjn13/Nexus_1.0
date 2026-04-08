@@ -91,7 +91,7 @@ export function AuthView({ onLogin }: AuthViewProps) {
           <div className="relative z-10 flex flex-col gap-6">
             <div className="flex -space-x-3">
               {[1, 2, 3, 4].map((i) => (
-                <img key={i} src={`https://i.pravatar.cc/100?img=${i+10}`} className="w-10 h-10 rounded-full border-2 border-[#190019]" alt="user" />
+                <img key={i} src={`https://api.dicebear.com/7.x/avataaars/svg?seed=user${i}`} className="w-10 h-10 rounded-full border-2 border-[#190019]" alt="user" />
               ))}
               <div className="w-10 h-10 rounded-full bg-[#522B5B] border-2 border-[#190019] flex items-center justify-center text-[12px] font-black text-[#FBE4D8]">
                 +2k

@@ -62,7 +62,7 @@ export function ProfileView({ user, onUpdateUser }: ProfileViewProps) {
 
         <div className="relative group">
           <img 
-            src="https://i.pravatar.cc/150?img=1" 
+            src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" 
             alt="Profile Avatar" 
             className="w-32 h-32 rounded-full object-cover border-4 border-white dark:border-[#2B124C] shadow-xl group-hover:brightness-75 transition-all"
           />

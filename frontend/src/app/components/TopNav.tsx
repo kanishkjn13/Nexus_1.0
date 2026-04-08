@@ -1,4 +1,4 @@
-import { Bell, Search, X } from 'lucide-react';
+import { Bell, Search, X, Menu } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
 const MOCK_NOTIFICATIONS = [
@@ -16,9 +16,10 @@ interface TopNavProps {
   onSearch: (query: string) => void;
   user: User;
   onProfileClick: () => void;
+  onMenuClick: () => void;
 }
 
-export function TopNav({ onSearch, user, onProfileClick }: TopNavProps) {
+export function TopNav({ onSearch, user, onProfileClick, onMenuClick }: TopNavProps) {
   const [scrolled, setScrolled] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const [showNotifications, setShowNotifications] = useState(false);
@@ -50,11 +51,18 @@ export function TopNav({ onSearch, user, onProfileClick }: TopNavProps) {
   };
 
   return (
-    <nav className={`flex justify-between items-center px-10 py-5 sticky top-0 z-40 hidden lg:flex transition-all duration-300 ease-out ${scrolled ? 'bg-white/70 dark:bg-[#190019]/80 backdrop-blur-xl border-b border-white/50 dark:border-white/5 shadow-sm' : 'bg-transparent'}`}>
-      <div className="flex items-center gap-6 flex-1">
-        <label className="flex items-center bg-white/40 dark:bg-[#2B124C]/40 backdrop-blur-md rounded-full px-5 py-2.5 border border-white/60 dark:border-white/10 shadow-sm focus-within:ring-2 focus-within:ring-purple-300 dark:focus-within:ring-[#522B5B] w-[320px] transition-all">
-          <Search className="w-5 h-5 text-gray-500 dark:text-[#DFB6B2]/70 mr-3 shrink-0" />
-          <input type="text" placeholder="Search students, challenges..." value={searchValue} onChange={handleChange} className="bg-transparent focus:outline-none placeholder:text-gray-500 dark:placeholder:text-[#DFB6B2]/50 text-[#362A4A] dark:text-[#FBE4D8] w-full text-[15px] font-medium" />
+    <nav className={`flex justify-between items-center px-4 md:px-10 py-5 sticky top-0 z-40 transition-all duration-300 ease-out ${scrolled ? 'bg-white/70 dark:bg-[#190019]/80 backdrop-blur-xl border-b border-white/50 dark:border-white/5 shadow-sm' : 'bg-transparent'}`}>
+      <div className="flex items-center gap-4 md:gap-6 flex-1">
+        <button 
+          onClick={onMenuClick}
+          className="lg:hidden p-2.5 bg-white/40 dark:bg-[#2B124C]/40 backdrop-blur-md rounded-xl border border-white/60 dark:border-white/10 text-[#362A4A] dark:text-[#FBE4D8] hover:scale-105 active:scale-95 transition-all"
+        >
+          <Menu className="w-6 h-6" />
+        </button>
+
+        <label className="flex items-center bg-white/40 dark:bg-[#2B124C]/40 backdrop-blur-md rounded-full px-4 md:px-5 py-2 md:py-2.5 border border-white/60 dark:border-white/10 shadow-sm focus-within:ring-2 focus-within:ring-purple-300 dark:focus-within:ring-[#522B5B] w-full max-w-[320px] transition-all">
+          <Search className="w-4 h-4 md:w-5 md:h-5 text-gray-500 dark:text-[#DFB6B2]/70 mr-2 md:mr-3 shrink-0" />
+          <input type="text" placeholder="Search..." value={searchValue} onChange={handleChange} className="bg-transparent focus:outline-none placeholder:text-gray-500 dark:placeholder:text-[#DFB6B2]/50 text-[#362A4A] dark:text-[#FBE4D8] w-full text-[14px] md:text-[15px] font-medium" />
         </label>
       </div>
 
@@ -87,12 +95,12 @@ export function TopNav({ onSearch, user, onProfileClick }: TopNavProps) {
 
         <div 
           onClick={onProfileClick}
-          className="flex items-center gap-3 cursor-pointer hover:bg-white/20 dark:hover:bg-white/5 p-2 pr-4 rounded-full transition-all border border-transparent hover:border-white/40 dark:hover:border-white/10"
+          className="flex items-center gap-2 md:gap-3 cursor-pointer hover:bg-white/20 dark:hover:bg-white/5 p-1.5 md:p-2 pr-3 md:pr-4 rounded-full transition-all border border-transparent hover:border-white/40 dark:hover:border-white/10 shrink-0"
         >
-          <img src="https://i.pravatar.cc/150?img=1" alt={user.name} className="w-[40px] h-[40px] rounded-full object-cover border-[2px] border-white dark:border-[#2B124C] shadow-sm" />
-          <div className="flex flex-col leading-tight">
-            <span className="font-extrabold text-[14px] text-[#362A4A] dark:text-[#FBE4D8]">{user.name}</span>
-            <span className="text-[11px] text-gray-600 dark:text-[#DFB6B2]/80 font-semibold tracking-wide uppercase">Active Student</span>
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt={user.name} className="w-[32px] h-[32px] md:w-[40px] md:h-[40px] rounded-full object-cover border-[2px] border-white dark:border-[#2B124C] shadow-sm" />
+          <div className="flex flex-col leading-tight hidden sm:flex">
+            <span className="font-extrabold text-[13px] md:text-[14px] text-[#362A4A] dark:text-[#FBE4D8] truncate max-w-[80px] md:max-w-none">{user.name}</span>
+            <span className="text-[10px] md:text-[11px] text-gray-600 dark:text-[#DFB6B2]/80 font-semibold tracking-wide uppercase">Active</span>
           </div>
         </div>
       </div>
