@@ -9,7 +9,17 @@ class StudySessionSerializer(serializers.ModelSerializer):
         model = StudySession
         "total_questions", "time_limit",
         "time_taken", "timed_out", "created_at"
-        fields = ["id", "user", "topic", "score", "total_questions", "created_at"]
+        fields = [
+            "id",
+            "user",
+            "topic",
+            "score",
+            "total_questions",
+            "time_limit",
+            "time_taken",
+            "timed_out",
+            "created_at",
+        ]
         read_only_fields = ["id", "user", "created_at"]
 
     def validate(self, data):

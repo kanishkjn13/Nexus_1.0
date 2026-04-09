@@ -3,7 +3,8 @@ import json
 import google.generativeai as genai
 
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-model = genai.GenerativeModel("gemini-1.5-flash")
+
+model = genai.GenerativeModel("gemini-1.5-flash-latest")
 
 
 def build_prompt(topic: str, number_of_questions: int) -> str:
@@ -30,19 +31,31 @@ Rules:
 """.strip()
 
 
-def generate_questions(topic: str, number_of_questions: int) -> list:
-    prompt = build_prompt(topic, number_of_questions)
-    response = model.generate_content(prompt)
-    raw = response.text.strip()
+def clean_response(raw: str) -> str:
+    """Remove markdown/code fences if present"""
+    raw = raw.strip()
 
-    # Strip markdown fences if Gemini wraps response
     if raw.startswith("```"):
-        raw = raw.split("```")[1]
+        parts = raw.split("```")
+        if len(parts) > 1:
+            raw = parts[1]
         if raw.startswith("json"):
             raw = raw[4:]
         raw = raw.strip()
 
+    return raw
+
+
+def generate_questions(topic: str, number_of_questions: int) -> list:
+    prompt = build_prompt(topic, number_of_questions)
+
+    response = model.generate_content(
+        prompt, generation_config={"temperature": 0.2}  # 🔥 more consistent JSON
+    )
+
+    raw = clean_response(response.text)
+
     try:
         return json.loads(raw)
     except json.JSONDecodeError:
-        raise ValueError(f"Gemini returned invalid JSON: {raw[:200]}")
+        raise ValueError(f"Invalid JSON returned:\n{raw[:300]}")
