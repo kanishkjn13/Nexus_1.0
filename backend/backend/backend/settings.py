@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "corsheaders",
     "apps.User",
-    "apps.proofly",
+    "apps.User_session",
 ]
 
 MIDDLEWARE = [

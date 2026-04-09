@@ -1,6 +1,7 @@
 import { Bell, Search, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
+
 const MOCK_NOTIFICATIONS = [
   { id: 1, title: 'Challenge Completed', desc: 'You earned +20 XP in Logic Puzzles!', time: '2m ago' },
   { id: 2, title: 'New Course Available', desc: 'Advanced Algebra is now open.', time: '1h ago' },
@@ -10,6 +11,7 @@ const MOCK_NOTIFICATIONS = [
 interface User {
   name: string;
   email: string;
+  image?: string | null;
 }
 
 interface TopNavProps {
@@ -60,11 +62,11 @@ export function TopNav({ onSearch, user, onProfileClick }: TopNavProps) {
 
       <div className="flex items-center gap-5 relative">
         <div className="relative">
-          <div onClick={() => {setShowNotifications(!showNotifications); setUnreadCount(0);}} className="bg-white/40 dark:bg-[#2B124C]/40 backdrop-blur-md p-3 rounded-full border border-white/60 dark:border-white/10 shadow-sm transition-all hover:scale-105 cursor-pointer">
+          <div onClick={() => { setShowNotifications(!showNotifications); setUnreadCount(0); }} className="bg-white/40 dark:bg-[#2B124C]/40 backdrop-blur-md p-3 rounded-full border border-white/60 dark:border-white/10 shadow-sm transition-all hover:scale-105 cursor-pointer">
             <Bell className="w-5 h-5 text-[#362A4A] dark:text-[#FBE4D8]" />
           </div>
           {unreadCount > 0 && <span className="absolute top-0 right-0 w-[11px] h-[11px] bg-[#854F6C] rounded-full border-[2px] border-white dark:border-[#190019] translate-x-[2px] translate-y-[2px] animate-pulse" />}
-          
+
           {showNotifications && (
             <div ref={popoverRef} className="absolute right-0 mt-4 w-80 bg-white/95 dark:bg-[#2B124C]/95 backdrop-blur-2xl rounded-[24px] shadow-2xl border border-white/20 dark:border-white/5 p-6 animate-in fade-in slide-in-from-top-2 duration-300">
               <div className="flex justify-between items-center mb-6">
@@ -85,11 +87,19 @@ export function TopNav({ onSearch, user, onProfileClick }: TopNavProps) {
           )}
         </div>
 
-        <div 
+        <div
           onClick={onProfileClick}
           className="flex items-center gap-3 cursor-pointer hover:bg-white/20 dark:hover:bg-white/5 p-2 pr-4 rounded-full transition-all border border-transparent hover:border-white/40 dark:hover:border-white/10"
         >
-          <img src="https://i.pravatar.cc/150?img=1" alt={user.name} className="w-[40px] h-[40px] rounded-full object-cover border-[2px] border-white dark:border-[#2B124C] shadow-sm" />
+          <img
+            src={
+              user.image
+                ? "http://127.0.0.1:8000" + user.image
+                : "/default-avatar.png"
+            }
+            alt={user.name}
+            className="w-[40px] h-[40px] rounded-full object-cover border-[2px] border-white dark:border-[#2B124C] shadow-sm"
+          />
           <div className="flex flex-col leading-tight">
             <span className="font-extrabold text-[14px] text-[#362A4A] dark:text-[#FBE4D8]">{user.name}</span>
             <span className="text-[11px] text-gray-500 dark:text-[#DFB6B2]/60 font-semibold tracking-wide uppercase">Premium Student</span>
