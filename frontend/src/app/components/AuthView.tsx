@@ -19,48 +19,65 @@ export function AuthView({ onLogin }: AuthViewProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    
-    // Basic validation
+
     if (!email || !password || (!isLogin && !name)) {
       setError('Please fill in all fields.');
       return;
     }
 
     setLoading(true);
-    
-    // Mock authentication check
-    setTimeout(() => {
-      setLoading(false);
-      
+
+    try {
+      let response;
+
       if (isLogin) {
-        const foundUser = MOCK_USERS.find(u => u.email === email);
-        
-        if (!foundUser) {
-          setError('Account not found. Redirecting to sign up...');
-          setTimeout(() => {
-            setIsLogin(false);
-            setName('');
-            setError('');
-          }, 1500);
-          return;
-        }
-
-        if (foundUser.password !== password) {
-          setError('Wrong Password');
-          return;
-        }
-
-        onLogin?.({ name: foundUser.name, email: foundUser.email });
+        // LOGIN API
+        response = await fetch('http://127.0.0.1:8000/api/auth/login/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
       } else {
-        // Mock Sign Up
-        onLogin?.({ name, email });
+        // SIGNUP API
+        response = await fetch('http://127.0.0.1:8000/api/auth/signup/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password, name }),
+        });
       }
-    }, 1200);
-  };
 
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.detail || 'Something went wrong');
+      }
+
+      //Store tokens (VERY IMPORTANT)
+      if (data.access) {
+        localStorage.setItem('access_token', data.access);
+        localStorage.setItem('refresh_token', data.refresh);
+      }
+
+      // Fetch user info (optional but better)
+      const userRes = await fetch('http://127.0.0.1:8000/api/auth/me/', {
+        headers: {
+          'Authorization': `Bearer ${data.access}`,
+        },
+      });
+
+      const userData = await userRes.json();
+
+      onLogin?.(userData);
+
+    } catch (err: any) {
+      setError(err.message || 'Authentication failed');
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="fixed inset-0 z-[100] bg-[#190019] flex items-center justify-center p-6 overflow-y-auto no-scrollbar">
       {/* Background Decorative Orbs */}
@@ -68,11 +85,11 @@ export function AuthView({ onLogin }: AuthViewProps) {
       <div className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] bg-[#854F6C]/20 rounded-full blur-[150px] pointer-events-none animate-pulse" style={{ animationDelay: '2s' }} />
 
       <div className="w-full max-w-[1100px] grid grid-cols-1 lg:grid-cols-2 bg-white/5 backdrop-blur-3xl rounded-[40px] border border-white/10 shadow-2xl overflow-hidden relative z-10 animate-in fade-in zoom-in-95 duration-700">
-        
+
         {/* Left Section - Hero/Info */}
         <div className="hidden lg:flex flex-col justify-between p-12 bg-gradient-to-br from-[#190019] via-[#2B124C] to-[#522B5B] relative overflow-hidden text-[#FBE4D8]">
           <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_#DFB6B2_1.5px,_transparent_2px)]" style={{ backgroundSize: '24px 24px' }} />
-          
+
           <div className="relative z-10">
             <div className="flex items-center gap-3 mb-10">
               <div className="w-10 h-10 rounded-[12px] bg-gradient-to-br from-[#522B5B] to-[#854F6C] shadow-lg flex items-center justify-center">
@@ -119,9 +136,9 @@ export function AuthView({ onLogin }: AuthViewProps) {
               {!isLogin && (
                 <div className="relative group">
                   <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#DFB6B2]/30 group-focus-within:text-[#854F6C] transition-colors" />
-                  <input 
-                    type="text" 
-                    placeholder="Full Name" 
+                  <input
+                    type="text"
+                    placeholder="Full Name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     className="w-full h-14 rounded-2xl pl-12 pr-6 bg-white/5 border border-white/10 focus:outline-none focus:ring-2 focus:ring-[#522B5B] text-white font-bold text-[15px] transition-all"
@@ -131,9 +148,9 @@ export function AuthView({ onLogin }: AuthViewProps) {
 
               <div className="relative group">
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30 group-focus-within:text-white/60 transition-colors" />
-                <input 
-                  type="email" 
-                  placeholder="name@email.com" 
+                <input
+                  type="email"
+                  placeholder="name@email.com"
                   autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -143,9 +160,9 @@ export function AuthView({ onLogin }: AuthViewProps) {
 
               <div className="relative group">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30 group-focus-within:text-white/60 transition-colors" />
-                <input 
-                  type="password" 
-                  placeholder="••••••••" 
+                <input
+                  type="password"
+                  placeholder="••••••••"
                   autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -155,7 +172,7 @@ export function AuthView({ onLogin }: AuthViewProps) {
 
               {isLogin && (
                 <div className="flex justify-end -mt-2">
-                  <button 
+                  <button
                     type="button"
                     onClick={() => setError('Password reset link sent to your email!')}
                     className="text-[12px] font-black text-white/40 hover:text-white transition-colors flex items-center gap-1.5 px-1"
@@ -169,8 +186,8 @@ export function AuthView({ onLogin }: AuthViewProps) {
                 <p className="text-red-400 text-[13px] font-black px-1 animate-pulse">{error}</p>
               )}
 
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 disabled={loading}
                 className="w-full h-14 rounded-2xl bg-gradient-to-r from-[#522B5B] to-[#854F6C] text-[#FBE4D8] font-black text-[16px] shadow-lg hover:scale-[0.98] transition-all flex items-center justify-center gap-3 active:scale-95 disabled:opacity-50"
               >
@@ -194,7 +211,7 @@ export function AuthView({ onLogin }: AuthViewProps) {
 
               <p className="text-[14px] font-bold text-white/40">
                 {isLogin ? "Don't have an account?" : "Already have an account?"}
-                <button 
+                <button
                   onClick={() => { setIsLogin(!isLogin); setError(''); }}
                   className="ml-2 text-white font-black hover:text-white/80 transition-colors underline underline-offset-4"
                 >
