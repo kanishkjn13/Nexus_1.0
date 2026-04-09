@@ -1,24 +1,24 @@
-import { 
-  Trophy, 
-  Flame, 
-  Target, 
-  BookOpen, 
-  ChevronRight, 
-  TrendingUp, 
+import {
+  Trophy,
+  Flame,
+  Target,
+  BookOpen,
+  ChevronRight,
+  TrendingUp,
   Award,
   Calendar as CalendarIcon,
   ChevronDown,
   PieChart as PieChartIcon
 } from 'lucide-react';
-import { 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  ResponsiveContainer, 
-  AreaChart, 
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  AreaChart,
   Area,
   PieChart,
   Pie,
@@ -120,7 +120,7 @@ const CustomTooltip = ({ active, payload }: any) => {
 export function ProgressView() {
   return (
     <div className="flex flex-col gap-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      
+
       {/* Header View */}
       <div className="flex flex-col sm:flex-row justify-between sm:items-end gap-4">
         <div>
@@ -136,34 +136,34 @@ export function ProgressView() {
 
       {/* Top Main Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-        <StatCard 
-          icon={Trophy} 
-          title="Total XP" 
-          value="12,840" 
-          change="+12.5%" 
-          subtitle="from last week" 
+        <StatCard
+          icon={Trophy}
+          title="Total XP"
+          value="12,840"
+          change="+12.5%"
+          subtitle="from last week"
           iconBg="bg-gradient-to-br from-purple-400 to-indigo-600 shadow-purple-500/20"
         />
-        <StatCard 
-          icon={Flame} 
-          title="Current Streak" 
-          value="7 days" 
-          subtitle="Keep it going!" 
+        <StatCard
+          icon={Flame}
+          title="Current Streak"
+          value="7 days"
+          subtitle="Keep it going!"
           iconBg="bg-gradient-to-br from-orange-400 to-red-500 shadow-orange-500/20"
         />
-        <StatCard 
-          icon={TrendingUp} 
-          title="Longest Streak" 
-          value="15 days" 
-          subtitle="Achieved on May 10" 
+        <StatCard
+          icon={TrendingUp}
+          title="Longest Streak"
+          value="15 days"
+          subtitle="Achieved on May 10"
           iconBg="bg-gradient-to-br from-blue-400 to-cyan-600 shadow-blue-500/20"
         />
-        <StatCard 
-          icon={BookOpen} 
-          title="Courses Completed" 
-          value="8" 
-          change="+2 this month" 
-          subtitle="Keep learning!" 
+        <StatCard
+          icon={BookOpen}
+          title="Courses Completed"
+          value="8"
+          change="+2 this month"
+          subtitle="Keep learning!"
           iconBg="bg-gradient-to-br from-emerald-400 to-teal-600 shadow-emerald-500/20"
         />
       </div>
@@ -171,15 +171,15 @@ export function ProgressView() {
       {/* Second Row: Charts & Calendar */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Study Streak Bar Chart */}
-        <Card 
-          className="lg:col-span-6" 
-          title="Study Streak" 
+        <Card
+          className="lg:col-span-6"
+          title="Study Streak"
           subtitle="Your daily study activity for the past 7 days."
         >
           <div className="h-[300px] w-full mt-6 relative">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart 
-                data={STREAK_DATA} 
+              <BarChart
+                data={STREAK_DATA}
                 margin={{ top: 20, right: 10, left: -20, bottom: 0 }}
                 barGap={8}
               >
@@ -198,34 +198,34 @@ export function ProgressView() {
                   </filter>
                 </defs>
                 <CartesianGrid strokeDasharray="8 8" vertical={false} stroke="rgba(255,255,255,0.03)" />
-                <XAxis 
-                  dataKey="day" 
-                  axisLine={false} 
-                  tickLine={false} 
-                  tick={{ fill: '#A19DAB', fontSize: 12, fontWeight: '900' }} 
+                <XAxis
+                  dataKey="day"
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: '#A19DAB', fontSize: 12, fontWeight: '900' }}
                   dy={15}
                 />
-                <YAxis 
-                  axisLine={false} 
-                  tickLine={false} 
-                  tick={{ fill: '#A19DAB', fontSize: 11, fontWeight: 'bold' }} 
+                <YAxis
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: '#A19DAB', fontSize: 11, fontWeight: 'bold' }}
                 />
-                <Tooltip 
-                  content={<CustomTooltip />} 
-                  cursor={{ fill: 'white', fillOpacity: 0.03, radius: 12 }} 
+                <Tooltip
+                  content={<CustomTooltip />}
+                  cursor={{ fill: 'white', fillOpacity: 0.03, radius: 12 }}
                 />
-                <Bar 
-                  dataKey="xp" 
-                  radius={[12, 12, 12, 12]} 
+                <Bar
+                  dataKey="xp"
+                  radius={[12, 12, 12, 12]}
                   barSize={32}
                   animationDuration={2000}
                   animationEasing="ease-out"
                 >
                   {STREAK_DATA.map((entry, index) => (
-                    <Cell 
-                      key={`cell-${index}`} 
+                    <Cell
+                      key={`cell-${index}`}
                       fill={entry.today ? 'url(#todayBarGradient)' : 'url(#barGradient)'}
-                      style={{ 
+                      style={{
                         filter: entry.today ? 'drop-shadow(0 0 8px rgba(236,72,153,0.4))' : 'none',
                         transition: 'all 0.3s ease'
                       }}
@@ -235,7 +235,7 @@ export function ProgressView() {
               </BarChart>
             </ResponsiveContainer>
           </div>
-          
+
           <div className="flex justify-between items-center mt-6 px-2 pt-6 border-t border-white/5">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-gradient-to-br from-purple-400 to-indigo-600 shadow-lg" />
@@ -267,15 +267,14 @@ export function ProgressView() {
                 const isStreak = day >= 6 && day <= 12;
                 const isToday = day === 25;
                 return (
-                  <div 
-                    key={day} 
-                    className={`h-7 w-7 flex items-center justify-center rounded-lg text-[11px] font-bold ${
-                      isStreak 
-                        ? 'bg-[#8b5cf6] text-white shadow-lg shadow-purple-500/20' 
-                        : isToday 
-                          ? 'border-2 border-[#8b5cf6] text-[#8b5cf6]' 
+                  <div
+                    key={day}
+                    className={`h-7 w-7 flex items-center justify-center rounded-lg text-[11px] font-bold ${isStreak
+                        ? 'bg-[#8b5cf6] text-white shadow-lg shadow-purple-500/20'
+                        : isToday
+                          ? 'border-2 border-[#8b5cf6] text-[#8b5cf6]'
                           : 'text-[#362A4A] dark:text-[#DFB6B2]/60 hover:bg-black/5 dark:hover:bg-white/5'
-                    }`}
+                      }`}
                   >
                     {day}
                   </div>
@@ -330,12 +329,12 @@ export function ProgressView() {
 
       {/* Third Row: Learning Progress & Weekly Activity & Achievements */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        
+
         {/* Learning Progress List */}
         <Card className="lg:col-span-4" title="Learning Progress" subtitle="Overall progress in your courses">
           <div className="absolute top-6 right-6 flex items-baseline gap-1">
-             <span className="text-[18px] font-black text-[#362A4A] dark:text-[#FBE4D8]">72%</span>
-             <span className="text-[9px] font-bold text-[#522B5B]/40 dark:text-[#DFB6B2]/30 uppercase tracking-widest">Avg</span>
+            <span className="text-[18px] font-black text-[#362A4A] dark:text-[#FBE4D8]">72%</span>
+            <span className="text-[9px] font-bold text-[#522B5B]/40 dark:text-[#DFB6B2]/30 uppercase tracking-widest">Avg</span>
           </div>
           <div className="mt-8 space-y-6">
             {LEARNING_COURSES.map((course, i) => (
@@ -353,9 +352,9 @@ export function ProgressView() {
                   </div>
                 </div>
                 <div className="w-full h-1.5 bg-gray-100 dark:bg-black/40 rounded-full overflow-hidden">
-                  <div 
-                    className={`h-full ${course.color} rounded-full transition-all duration-1000 shadow-sm`} 
-                    style={{ width: `${course.progress}%` }} 
+                  <div
+                    className={`h-full ${course.color} rounded-full transition-all duration-1000 shadow-sm`}
+                    style={{ width: `${course.progress}%` }}
                   />
                 </div>
               </div>
@@ -375,26 +374,26 @@ export function ProgressView() {
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
-                <XAxis 
-                  dataKey="day" 
-                  axisLine={false} 
-                  tickLine={false} 
-                  tick={{ fill: '#A19DAB', fontSize: 11, fontWeight: 'bold' }} 
+                <XAxis
+                  dataKey="day"
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: '#A19DAB', fontSize: 11, fontWeight: 'bold' }}
                   dy={10}
                 />
-                <YAxis 
-                  axisLine={false} 
-                  tickLine={false} 
-                  tick={{ fill: '#A19DAB', fontSize: 11, fontWeight: 'bold' }} 
+                <YAxis
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: '#A19DAB', fontSize: 11, fontWeight: 'bold' }}
                 />
                 <Tooltip content={<CustomTooltip />} />
-                <Area 
-                  type="monotone" 
-                  dataKey="activity" 
-                  stroke="#8b5cf6" 
-                  strokeWidth={3} 
-                  fillOpacity={1} 
-                  fill="url(#colorActivity)" 
+                <Area
+                  type="monotone"
+                  dataKey="activity"
+                  stroke="#8b5cf6"
+                  strokeWidth={3}
+                  fillOpacity={1}
+                  fill="url(#colorActivity)"
                 />
               </AreaChart>
             </ResponsiveContainer>
@@ -402,9 +401,9 @@ export function ProgressView() {
         </Card>
 
         {/* Achievements List */}
-        <Card 
-          className="lg:col-span-3" 
-          title="Achievements" 
+        <Card
+          className="lg:col-span-3"
+          title="Achievements"
           subtitle="4 / 10 unlocked"
           extra={<button className="text-[11px] font-black text-purple-500 hover:underline">View All</button>}
         >
@@ -428,9 +427,9 @@ export function ProgressView() {
                 </div>
                 {ach.progress < 100 && (
                   <div className="w-full h-1 bg-gray-100 dark:bg-black/40 rounded-full mt-1">
-                    <div 
-                      className="h-full bg-purple-500 rounded-full" 
-                      style={{ width: `${ach.progress}%` }} 
+                    <div
+                      className="h-full bg-purple-500 rounded-full"
+                      style={{ width: `${ach.progress}%` }}
                     />
                   </div>
                 )}
