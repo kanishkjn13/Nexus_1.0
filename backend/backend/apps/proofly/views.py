@@ -4,6 +4,8 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from .services.ai_services import generate_questions
 
+QUIZ_TIME_LIMIT = 10 * 60  # 10 minutes fixed for every quiz
+
 
 class GenerateQuestionsView(APIView):
     permission_classes = [IsAuthenticated]
@@ -11,7 +13,7 @@ class GenerateQuestionsView(APIView):
     def post(self, request):
         topic = request.data.get("topic", "").strip()
         number_of_questions = request.data.get("number_of_questions", 5)
-        time_limit = request.data.get("time_limit")
+        study_time = request.data.get("study_time")  # how long they studied
 
         # Validate topic
         if not topic:
@@ -30,22 +32,22 @@ class GenerateQuestionsView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        # Validate time_limit
+        # Validate study_time (in seconds)
         try:
-            time_limit = int(time_limit)
-            if time_limit <= 0:
+            study_seconds = int(study_time)
+            if study_seconds <= 0:
                 raise ValueError
         except (ValueError, TypeError):
             return Response(
                 {
-                    "error": "time_limit is required and must be a positive integer (seconds)."
+                    "error": "study_time is required and must be a positive integer (seconds)."
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        # Call Gemini
+        # Call Groq with difficulty based on study time
         try:
-            questions = generate_questions(topic, number_of_questions)
+            questions = generate_questions(topic, number_of_questions, study_seconds)
         except ValueError as e:
             return Response(
                 {"error": "AI returned an invalid response.", "detail": str(e)},
@@ -60,10 +62,15 @@ class GenerateQuestionsView(APIView):
                 status=status.HTTP_503_SERVICE_UNAVAILABLE,
             )
 
+        from .services.ai_services import get_difficulty
+
+        difficulty = get_difficulty(study_seconds)
+
         return Response(
             {
                 "topic": topic,
-                "time_limit": time_limit,
+                "difficulty": difficulty,  # ← tells frontend what level
+                "time_limit": QUIZ_TIME_LIMIT,  # ← fixed 10 min quiz timer
                 "number_of_questions": number_of_questions,
                 "questions": questions,
             },
