@@ -9,7 +9,7 @@ class StudySession(models.Model):
     topic = models.CharField(max_length=255)
     score = models.IntegerField()
     total_questions = models.IntegerField()
-    time_limit = models.IntegerField(default=600, help_text="Time limit in seconds")
+    time_limit = models.IntegerField(default=0, help_text="Time limit in seconds")
     time_taken = models.IntegerField(
         default=0, help_text="Actual time taken in seconds"
     )

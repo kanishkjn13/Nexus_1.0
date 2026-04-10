@@ -8,7 +8,7 @@ QUIZ_TIME_LIMIT = 10 * 60  # 10 minutes fixed for every quiz
 
 
 class GenerateQuestionsView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = []
 
     def post(self, request):
         topic = request.data.get("topic", "").strip()
