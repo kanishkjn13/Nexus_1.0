@@ -368,57 +368,67 @@ export function AiView() {
   };
 
   // ── Submit ─────────────────────────────────────────────────────────────────
+  const handleSubmit = async (timedOut = false) => {
+    if (appState !== 'quiz') return; //prevent double submit
 
-  const handleGenerate = async () => {
-    if (!topic.trim() || !studyTime.trim()) return;
+    stopTimer();
+    setAppState('submitting');
 
-    setTimeError('');
-    setErrorMsg('');
+    const timeTaken = Math.floor((Date.now() - startTime) / 1000);
 
-    const timeLimitSecs = parseTimeToSeconds(studyTime);
-
-    if (!timeLimitSecs) {
-      setTimeError('Try: 30m, 1h, 90s');
-      return;
-    }
-
-    setAppState('loading');
+    const score = timedOut
+      ? 0
+      : answers.reduce((acc, ans, i) => {
+        return acc + (ans === questions[i].correct_answer ? 1 : 0);
+      }, 0);
 
     try {
-      const res = await api.post('/generate-questions/', {
+      const res = await api.post('/sessions/', {
         topic: topic.trim(),
-        number_of_questions: 5,
-        time_limit: timeLimitSecs,
+        score,
+        total_questions: questions.length,
+        time_limit: timeLimit,
+        time_taken: timeTaken,
       });
 
-      console.log("API RESPONSE:", res.data); // 🔥 DEBUG
+      setResult({
+        score: res.data.score,
+        total_questions: res.data.total_questions,
+        accuracy: (res.data.score / res.data.total_questions) * 100,
+        timed_out: res.data.timed_out,
+        time_taken: timeTaken,
+        time_limit: timeLimit,
+      });
 
-      if (!res.data.questions || res.data.questions.length === 0) {
-        throw new Error("No questions received");
-      }
+    } catch (err) {
+      console.log("Submit error:", err);
 
-      const qs: Question[] = res.data.questions;
+      setResult({
+        score,
+        total_questions: questions.length,
+        accuracy: (score / questions.length) * 100,
+        timed_out: timedOut,
+        time_taken: timeTaken,
+        time_limit: timeLimit,
+      });
 
-      setQuestions(qs);
-      setAnswers(new Array(qs.length).fill(null));
-      setCurrentIndex(0);
-      setTimeLimit(timeLimitSecs);
-      setStartTime(Date.now());
-      setAppState('quiz');
-      startTimer(timeLimitSecs);
-
-    } catch (err: any) {
-      console.log("ERROR:", err);
-
-      setErrorMsg(
-        err?.response?.data?.detail ||
-        err?.response?.data?.error ||
-        "Server not reachable"
-      );
-
-      setAppState('idle');
+    } finally {
+      setAppState('result');
     }
   };
+  const handleRestart = () => {
+    stopTimer();
+    setAppState('idle');
+    setTopic('');
+    setStudyTime('');
+    setQuestions([]);
+    setAnswers([]);
+    setResult(null);
+    setErrorMsg('');
+    setTimeError('');
+  };
+
+  const canSend = topic.trim() !== '' && studyTime.trim() !== '' && appState === 'idle';
   // ─── Render ───────────────────────────────────────────────────────────────
 
   return (
