@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {
   Bot, User, PlusCircle, MessageSquare, History,
-  Trash2, Bookmark, ChevronRight, Clock, AlertCircle,
+  Trash2, Bookmark, Clock, AlertCircle,
   Trophy, RotateCcw, Send
 } from 'lucide-react';
 import api from '../../api/axios';
@@ -50,6 +50,12 @@ function formatStudyTime(seconds: number): string {
   return `${seconds}s`;
 }
 
+const DIFFICULTY_STYLES: Record<string, string> = {
+  easy: 'text-emerald-500',
+  medium: 'text-amber-500',
+  hard: 'text-red-400',
+};
+
 // ─── Timer Bar ────────────────────────────────────────────────────────────────
 
 function TimerBar({ timeLeft, timeLimit }: { timeLeft: number; timeLimit: number }) {
@@ -58,14 +64,19 @@ function TimerBar({ timeLeft, timeLimit }: { timeLeft: number; timeLimit: number
   const isWarn = pct <= 50 && pct > 20;
   return (
     <div className="flex items-center gap-3 px-6 py-3 border-b border-[#522B5B]/8 dark:border-white/5">
-      <Clock size={14} className={isDanger ? 'text-red-400 animate-pulse' : isWarn ? 'text-amber-400' : 'text-[#854F6C]'} />
+      <Clock
+        size={14}
+        className={isDanger ? 'text-red-400 animate-pulse' : isWarn ? 'text-amber-400' : 'text-[#854F6C]'}
+      />
       <div className="flex-1 h-1.5 bg-[#522B5B]/10 dark:bg-white/10 rounded-full overflow-hidden">
         <div
-          className={`h-full rounded-full transition-all duration-1000 ${isDanger ? 'bg-red-400' : isWarn ? 'bg-amber-400' : 'bg-[#854F6C]'}`}
+          className={`h-full rounded-full transition-all duration-1000 ${isDanger ? 'bg-red-400' : isWarn ? 'bg-amber-400' : 'bg-[#854F6C]'
+            }`}
           style={{ width: `${pct}%` }}
         />
       </div>
-      <span className={`text-[12px] font-black tabular-nums ${isDanger ? 'text-red-400' : isWarn ? 'text-amber-500' : 'text-[#362A4A] dark:text-[#FBE4D8]'}`}>
+      <span className={`text-[12px] font-black tabular-nums ${isDanger ? 'text-red-400' : isWarn ? 'text-amber-500' : 'text-[#362A4A] dark:text-[#FBE4D8]'
+        }`}>
         {formatTime(timeLeft)}
       </span>
     </div>
@@ -81,18 +92,18 @@ function Bubble({ role, children, time }: {
 }) {
   return (
     <div className={`flex gap-4 animate-in fade-in slide-in-from-bottom-2 duration-400 ${role === 'user' ? 'flex-row-reverse' : ''}`}>
-      {/* Avatar */}
       <div className={`w-9 h-9 rounded-2xl flex-shrink-0 flex items-center justify-center ${role === 'assistant'
-        ? 'bg-[#362A4A] dark:bg-[#522B5B]'
-        : 'bg-gradient-to-br from-[#854F6C] to-[#DFB6B2]'
+          ? 'bg-[#362A4A] dark:bg-[#522B5B]'
+          : 'bg-gradient-to-br from-[#854F6C] to-[#DFB6B2]'
         }`}>
-        {role === 'assistant' ? <Bot size={16} className="text-white" /> : <User size={16} className="text-white" />}
+        {role === 'assistant'
+          ? <Bot size={16} className="text-white" />
+          : <User size={16} className="text-white" />}
       </div>
-
       <div className={`max-w-[80%] flex flex-col ${role === 'user' ? 'items-end' : 'items-start'}`}>
         <div className={`px-5 py-4 rounded-3xl text-[14px] leading-relaxed ${role === 'assistant'
-          ? 'bg-white dark:bg-white/5 text-[#362A4A] dark:text-[#FBE4D8] rounded-tl-none shadow-sm border border-white/60 dark:border-white/5'
-          : 'bg-[#362A4A] dark:bg-[#522B5B] text-white rounded-tr-none'
+            ? 'bg-white dark:bg-white/5 text-[#362A4A] dark:text-[#FBE4D8] rounded-tl-none shadow-sm border border-white/60 dark:border-white/5'
+            : 'bg-[#362A4A] dark:bg-[#522B5B] text-white rounded-tr-none'
           }`}>
           {children}
         </div>
@@ -104,7 +115,7 @@ function Bubble({ role, children, time }: {
   );
 }
 
-// ─── Quiz Question (rendered inside a bubble) ─────────────────────────────────
+// ─── Quiz Bubble ──────────────────────────────────────────────────────────────
 
 function QuizBubble({ question, index, total, selected, onSelect, onNext, onPrev, onSubmit, answeredCount }: {
   question: Question;
@@ -126,14 +137,12 @@ function QuizBubble({ question, index, total, selected, onSelect, onNext, onPrev
       <div className="flex-1 max-w-[85%]">
         <div className="bg-white dark:bg-white/5 rounded-3xl rounded-tl-none border border-white/60 dark:border-white/5 shadow-sm overflow-hidden">
 
-          {/* Question header */}
           <div className="px-5 pt-5 pb-3">
-            {/* Progress dots */}
             <div className="flex gap-1 mb-3">
               {Array.from({ length: total }).map((_, i) => (
                 <div key={i} className={`h-1 rounded-full transition-all duration-300 ${i < index ? 'bg-[#854F6C] w-3'
-                  : i === index ? 'bg-[#522B5B] w-5'
-                    : 'bg-[#522B5B]/15 w-3'
+                    : i === index ? 'bg-[#522B5B] w-5'
+                      : 'bg-[#522B5B]/15 w-3'
                   }`} />
               ))}
             </div>
@@ -145,15 +154,14 @@ function QuizBubble({ question, index, total, selected, onSelect, onNext, onPrev
             </p>
           </div>
 
-          {/* Options */}
           <div className="px-5 pb-4 flex flex-col gap-2">
             {question.options.map((opt, i) => (
               <button
                 key={i}
                 onClick={() => onSelect(opt)}
                 className={`text-left px-4 py-3 rounded-2xl text-[13px] font-bold border transition-all duration-200 ${selected === opt
-                  ? 'border-[#522B5B] bg-[#522B5B]/8 text-[#362A4A] dark:text-[#FBE4D8]'
-                  : 'border-[#522B5B]/10 dark:border-white/10 text-[#522B5B]/70 dark:text-[#DFB6B2]/60 hover:border-[#522B5B]/30 hover:bg-[#522B5B]/5'
+                    ? 'border-[#522B5B] bg-[#522B5B]/8 text-[#362A4A] dark:text-[#FBE4D8]'
+                    : 'border-[#522B5B]/10 dark:border-white/10 text-[#522B5B]/70 dark:text-[#DFB6B2]/60 hover:border-[#522B5B]/30 hover:bg-[#522B5B]/5'
                   }`}
               >
                 {opt}
@@ -161,7 +169,6 @@ function QuizBubble({ question, index, total, selected, onSelect, onNext, onPrev
             ))}
           </div>
 
-          {/* Navigation */}
           <div className="px-5 pb-5 flex items-center justify-between border-t border-[#522B5B]/5 dark:border-white/5 pt-3">
             <button
               onClick={onPrev}
@@ -206,7 +213,10 @@ function ResultBubble({ result, topic, onRestart }: {
   onRestart: () => void;
 }) {
   const { score, total_questions, accuracy, timed_out, time_taken, time_limit } = result;
-  const label = timed_out ? "Time's up!" : accuracy >= 80 ? 'Excellent work!' : accuracy >= 50 ? 'Good job!' : 'Keep practicing!';
+  const label = timed_out ? "Time's up!"
+    : accuracy >= 80 ? 'Excellent work!'
+      : accuracy >= 50 ? 'Good job!'
+        : 'Keep practicing!';
 
   return (
     <div className="flex gap-4 animate-in fade-in slide-in-from-bottom-2 duration-400">
@@ -228,7 +238,6 @@ function ResultBubble({ result, topic, onRestart }: {
             </div>
           )}
 
-          {/* Score ring */}
           <div className="flex items-center gap-5 mb-4">
             <div className="relative w-20 h-20 flex-shrink-0">
               <svg className="w-full h-full -rotate-90" viewBox="0 0 80 80">
@@ -283,6 +292,7 @@ export function AiView() {
   const [topic, setTopic] = useState('');
   const [studyTime, setStudyTime] = useState('');
   const [timeError, setTimeError] = useState('');
+  const [difficulty, setDifficulty] = useState('');
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<(string | null)[]>([]);
@@ -291,12 +301,16 @@ export function AiView() {
   const [startTime, setStartTime] = useState(0);
   const [result, setResult] = useState<QuizResult | null>(null);
   const [errorMsg, setErrorMsg] = useState('');
+  const [msgTime] = useState(new Date());
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatAreaRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  // ── Scroll chat area only (not page) ──────────────────────────────────────
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [appState, currentIndex]);
+  }, [appState, currentIndex, errorMsg]);
 
   const stopTimer = () => {
     if (timerRef.current) { clearInterval(timerRef.current); timerRef.current = null; }
@@ -316,15 +330,15 @@ export function AiView() {
 
   // ── Generate ───────────────────────────────────────────────────────────────
 
-  const handleGenerate = async () => {
+  const handleGenerate = async (e?: React.MouseEvent) => {
+    e?.preventDefault(); // ✅ prevent page scroll
     if (!topic.trim() || !studyTime.trim()) return;
 
     setTimeError('');
     setErrorMsg('');
 
-    const timeLimitSecs = parseTimeToSeconds(studyTime);
-
-    if (!timeLimitSecs) {
+    const studySeconds = parseTimeToSeconds(studyTime);
+    if (!studySeconds) {
       setTimeError('Try: 30m, 1h, 90s');
       return;
     }
@@ -335,59 +349,55 @@ export function AiView() {
       const res = await api.post('/generate-questions/', {
         topic: topic.trim(),
         number_of_questions: 5,
-        time_limit: timeLimitSecs,
+        study_time: studySeconds, // ✅ study time → difficulty
       });
 
-      console.log("API RESPONSE:", res.data); // 🔥 DEBUG
-
       if (!res.data.questions || res.data.questions.length === 0) {
-        throw new Error("No questions received");
+        throw new Error('No questions received');
       }
 
       const qs: Question[] = res.data.questions;
+      const quizLimit: number = res.data.time_limit; // ✅ fixed 10 min from backend
+      const diff: string = res.data.difficulty;
 
       setQuestions(qs);
       setAnswers(new Array(qs.length).fill(null));
       setCurrentIndex(0);
-      setTimeLimit(timeLimitSecs);
+      setDifficulty(diff);
+      setTimeLimit(quizLimit);   // ✅ quiz timer = backend value (600s)
       setStartTime(Date.now());
       setAppState('quiz');
-      startTimer(timeLimitSecs);
+      startTimer(quizLimit);
 
     } catch (err: any) {
-      console.log("ERROR:", err);
-
       setErrorMsg(
         err?.response?.data?.detail ||
         err?.response?.data?.error ||
-        "Server not reachable"
+        'Server not reachable'
       );
-
       setAppState('idle');
     }
   };
 
   // ── Submit ─────────────────────────────────────────────────────────────────
-  const handleSubmit = async (timedOut = false) => {
-    if (appState !== 'quiz') return; //prevent double submit
 
+  const handleSubmit = async (timedOut = false) => {
+    if (appState !== 'quiz') return;
     stopTimer();
     setAppState('submitting');
 
     const timeTaken = Math.floor((Date.now() - startTime) / 1000);
-
     const score = timedOut
       ? 0
-      : answers.reduce((acc, ans, i) => {
-        return acc + (ans === questions[i].correct_answer ? 1 : 0);
-      }, 0);
+      : answers.reduce((acc, ans, i) =>
+        acc + (ans === questions[i].correct_answer ? 1 : 0), 0);
 
     try {
       const res = await api.post('/sessions/', {
         topic: topic.trim(),
         score,
         total_questions: questions.length,
-        time_limit: timeLimit,
+        time_limit: timeLimit,  // ✅ quiz time limit (600s)
         time_taken: timeTaken,
       });
 
@@ -400,9 +410,7 @@ export function AiView() {
         time_limit: timeLimit,
       });
 
-    } catch (err) {
-      console.log("Submit error:", err);
-
+    } catch {
       setResult({
         score,
         total_questions: questions.length,
@@ -411,16 +419,19 @@ export function AiView() {
         time_taken: timeTaken,
         time_limit: timeLimit,
       });
-
     } finally {
       setAppState('result');
     }
   };
+
+  // ── Restart ────────────────────────────────────────────────────────────────
+
   const handleRestart = () => {
     stopTimer();
     setAppState('idle');
     setTopic('');
     setStudyTime('');
+    setDifficulty('');
     setQuestions([]);
     setAnswers([]);
     setResult(null);
@@ -429,6 +440,7 @@ export function AiView() {
   };
 
   const canSend = topic.trim() !== '' && studyTime.trim() !== '' && appState === 'idle';
+
   // ─── Render ───────────────────────────────────────────────────────────────
 
   return (
@@ -436,7 +448,6 @@ export function AiView() {
 
       {/* ── Sidebar ── */}
       <div className="hidden lg:flex w-[280px] border-r border-[#522B5B]/10 dark:border-white/5 p-6 flex-col bg-[#F8F5FA] dark:bg-black/20">
-        {/* Brand */}
         <div className="flex items-center gap-3 mb-8">
           <div className="w-10 h-10 rounded-2xl bg-[#362A4A] flex items-center justify-center">
             <Bot size={20} className="text-white" />
@@ -450,7 +461,6 @@ export function AiView() {
           </div>
         </div>
 
-        {/* New session */}
         <button
           onClick={handleRestart}
           className="flex items-center justify-center gap-2 w-full py-3.5 bg-[#362A4A] dark:bg-[#FBE4D8] text-white dark:text-[#190019] rounded-2xl font-black text-[13px] hover:opacity-90 transition-all mb-6"
@@ -459,7 +469,16 @@ export function AiView() {
           New Session
         </button>
 
-        {/* How to use */}
+        {/* Difficulty badge — shows during quiz */}
+        {difficulty && (
+          <div className="mb-4 flex items-center gap-2 px-3 py-2 rounded-xl bg-[#362A4A]/5 dark:bg-white/5 border border-[#362A4A]/10 dark:border-white/10">
+            <span className="text-[10px] font-black text-[#522B5B]/40 dark:text-white/30 uppercase tracking-widest">Difficulty</span>
+            <span className={`text-[12px] font-black uppercase ${DIFFICULTY_STYLES[difficulty] || 'text-purple-500'}`}>
+              {difficulty}
+            </span>
+          </div>
+        )}
+
         <p className="text-[10px] font-black text-[#522B5B]/40 dark:text-white/30 uppercase tracking-[0.2em] mb-3">How it works</p>
         <div className="space-y-3">
           {[
@@ -476,6 +495,23 @@ export function AiView() {
             </div>
           ))}
         </div>
+
+        {/* Difficulty legend */}
+        <div className="mt-auto pt-6 border-t border-[#522B5B]/8 dark:border-white/5">
+          <p className="text-[10px] font-black text-[#522B5B]/40 dark:text-white/30 uppercase tracking-[0.2em] mb-3">Difficulty guide</p>
+          <div className="space-y-2">
+            {[
+              { level: 'Easy', time: '< 30 mins', color: 'text-emerald-500' },
+              { level: 'Medium', time: '30 min – 2h', color: 'text-amber-500' },
+              { level: 'Hard', time: '> 2 hours', color: 'text-red-400' },
+            ].map(({ level, time, color }) => (
+              <div key={level} className="flex items-center justify-between text-[11px]">
+                <span className={`font-black ${color}`}>{level}</span>
+                <span className="text-[#522B5B]/40 dark:text-white/20 font-bold">{time}</span>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* ── Main chat area ── */}
@@ -489,10 +525,20 @@ export function AiView() {
             </div>
             <div>
               <p className="font-black text-[15px] text-[#362A4A] dark:text-[#FBE4D8]">Chat session</p>
+              {/* ✅ Difficulty shown in header during quiz */}
               <p className="text-[11px] text-[#522B5B]/40 dark:text-white/30">
                 {appState === 'idle' ? 'Academic Mode'
                   : appState === 'loading' ? 'Generating questions...'
-                    : appState === 'quiz' ? `Quiz · ${topic}`
+                    : appState === 'quiz' ? (
+                      <span>
+                        Quiz · {topic}
+                        {difficulty && (
+                          <span className={`ml-2 font-black uppercase ${DIFFICULTY_STYLES[difficulty]}`}>
+                            · {difficulty}
+                          </span>
+                        )}
+                      </span>
+                    )
                       : appState === 'submitting' ? 'Saving session...'
                         : 'Session complete'}
               </p>
@@ -511,21 +557,22 @@ export function AiView() {
           </div>
         </div>
 
-        {/* Timer (only during quiz) */}
+        {/* Timer */}
         {appState === 'quiz' && (
           <TimerBar timeLeft={timeLeft} timeLimit={timeLimit} />
         )}
 
-        {/* Messages */}
-        <div className="flex-1 overflow-y-auto px-6 md:px-8 py-6 no-scrollbar">
+        {/* Messages — scrolls independently, page never scrolls */}
+        <div
+          ref={chatAreaRef}
+          className="flex-1 overflow-y-auto px-6 md:px-8 py-6 no-scrollbar"
+        >
           <div className="max-w-3xl mx-auto space-y-6">
 
-            {/* Welcome message (always shown) */}
-            <Bubble role="assistant" time={new Date()}>
-              Hello! I'm Proofly AI. Tell me what you studied and for how long — I'll quiz you on it!
+            <Bubble role="assistant" time={msgTime}>
+              Hello! I'm Proofly AI. Tell me what you studied and for how long — I'll generate questions based on your study depth!
             </Bubble>
 
-            {/* Loading state */}
             {(appState === 'loading' || appState === 'submitting') && (
               <Bubble role="assistant" time={new Date()}>
                 <div className="flex items-center gap-3">
@@ -535,27 +582,29 @@ export function AiView() {
                     <div className="w-1.5 h-1.5 bg-[#854F6C] rounded-full animate-bounce" />
                   </div>
                   <span className="text-[13px] text-[#522B5B]/60 dark:text-[#DFB6B2]/50 font-bold">
-                    {appState === 'loading' ? `Generating questions on "${topic}"...` : 'Saving your session...'}
+                    {appState === 'loading'
+                      ? `Generating ${difficulty || ''} questions on "${topic}"...`
+                      : 'Saving your session...'}
                   </span>
                 </div>
               </Bubble>
             )}
 
-            {/* User message after generation */}
             {(appState === 'quiz' || appState === 'submitting' || appState === 'result') && (
               <Bubble role="user" time={new Date()}>
                 I studied <strong>{topic}</strong> for <strong>{studyTime}</strong> — quiz me!
               </Bubble>
             )}
 
-            {/* Quiz question */}
             {appState === 'quiz' && questions.length > 0 && (
               <QuizBubble
                 question={questions[currentIndex]}
                 index={currentIndex}
                 total={questions.length}
                 selected={answers[currentIndex]}
-                onSelect={(opt) => setAnswers(prev => { const u = [...prev]; u[currentIndex] = opt; return u; })}
+                onSelect={(opt) => setAnswers(prev => {
+                  const u = [...prev]; u[currentIndex] = opt; return u;
+                })}
                 onNext={() => setCurrentIndex(p => Math.min(p + 1, questions.length - 1))}
                 onPrev={() => setCurrentIndex(p => Math.max(p - 1, 0))}
                 onSubmit={() => handleSubmit(false)}
@@ -563,12 +612,10 @@ export function AiView() {
               />
             )}
 
-            {/* Result */}
             {appState === 'result' && result && (
               <ResultBubble result={result} topic={topic} onRestart={handleRestart} />
             )}
 
-            {/* Error */}
             {errorMsg && (
               <Bubble role="assistant" time={new Date()}>
                 <div className="flex items-center gap-2">
@@ -582,54 +629,53 @@ export function AiView() {
           </div>
         </div>
 
-        {/* ── Input bar (matches your screenshot exactly) ── */}
+        {/* ── Input bar ── */}
         <div className="px-4 md:px-6 pb-4 md:pb-6 pt-3">
           <div className="max-w-3xl mx-auto">
             <div className="bg-white/80 dark:bg-[#190019]/80 backdrop-blur-xl border border-[#522B5B]/10 dark:border-white/10 rounded-[1.5rem] p-2.5 shadow-sm">
 
-              {/* Topic + Time row */}
               <div className="flex gap-2 px-3 pb-2.5 border-b border-[#522B5B]/6 dark:border-white/5">
                 <div className="flex-1 flex items-center gap-2">
                   <MessageSquare size={12} className="text-[#522B5B]/30 dark:text-white/20 flex-shrink-0" />
                   <input
                     type="text"
-                    placeholder="Topic"
+                    placeholder="What did you study?"
                     value={topic}
                     onChange={(e) => setTopic(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && canSend && handleGenerate()}
                     disabled={appState !== 'idle'}
                     className="w-full bg-transparent border-none outline-none text-[12px] font-black text-[#362A4A] dark:text-white placeholder-[#522B5B]/30 dark:placeholder-white/20 disabled:opacity-40"
                   />
                 </div>
                 <div className="w-px h-4 bg-[#522B5B]/10 self-center" />
-                <div className="flex items-center gap-2 w-36">
+                <div className="flex items-center gap-2 w-40">
                   <Clock size={12} className="text-[#522B5B]/30 dark:text-white/20 flex-shrink-0" />
                   <input
                     type="text"
-                    placeholder="Time (30m, 1h)"
+                    placeholder="How long? (30m, 1h)"
                     value={studyTime}
                     onChange={(e) => { setStudyTime(e.target.value); setTimeError(''); }}
+                    onKeyDown={(e) => e.key === 'Enter' && canSend && handleGenerate()}
                     disabled={appState !== 'idle'}
                     className="w-full bg-transparent border-none outline-none text-[12px] font-black text-[#362A4A] dark:text-white placeholder-[#522B5B]/30 dark:placeholder-white/20 disabled:opacity-40"
                   />
                 </div>
               </div>
 
-              {/* Send row */}
               <div className="flex items-center gap-2 pt-1 px-1">
-                <div className="flex-1 flex flex-col">
-                  <span className="px-2 py-2 text-[13px] font-bold text-[#522B5B]/30 dark:text-white/20">
-                    {timeError
-                      ? <span className="text-red-400">{timeError}</span>
-                      : appState === 'idle'
-                        ? 'Hit send to generate your quiz...'
-                        : appState === 'loading' ? 'Generating...'
-                          : appState === 'quiz' ? `Question ${currentIndex + 1} of ${questions.length}`
-                            : appState === 'submitting' ? 'Saving...'
-                              : 'Quiz complete!'}
+                <div className="flex-1">
+                  <span className="px-2 py-2 text-[12px] font-bold text-[#522B5B]/30 dark:text-white/20">
+                    {timeError ? (
+                      <span className="text-red-400">{timeError}</span>
+                    ) : appState === 'idle' ? 'Enter topic & study time, then hit send'
+                      : appState === 'loading' ? 'Generating questions...'
+                        : appState === 'quiz' ? `Question ${currentIndex + 1} of ${questions.length} · 10 min quiz`
+                          : appState === 'submitting' ? 'Saving your session...'
+                            : 'Quiz complete! Start a new session anytime.'}
                   </span>
                 </div>
                 <button
-                  onClick={handleGenerate}
+                  onClick={(e) => { e.preventDefault(); handleGenerate(); }} // ✅ no page scroll
                   disabled={!canSend}
                   className="w-11 h-11 rounded-2xl bg-[#362A4A] dark:bg-[#522B5B] text-white flex items-center justify-center hover:opacity-90 active:scale-95 transition-all disabled:opacity-30 disabled:cursor-not-allowed shadow-sm"
                 >
