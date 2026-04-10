@@ -6,7 +6,7 @@ from .services.ai_services import generate_questions
 
 
 class GenerateQuestionsView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = []
 
     def post(self, request):
         topic = request.data.get("topic", "").strip()
