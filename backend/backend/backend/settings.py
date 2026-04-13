@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "apps.User",
     "apps.User_session",
+    "apps.proofly",
 ]
 
 MIDDLEWARE = [

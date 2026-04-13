@@ -21,3 +21,9 @@ class StudySession(models.Model):
 
     def __str__(self):
         return f"{self.user} | {self.topic} | {self.score}/{self.total_questions}"
+
+    @property
+    def accuracy(self):
+        if self.total_questions == 0:
+            return 0
+        return round((self.score / self.total_questions) * 100, 1)
