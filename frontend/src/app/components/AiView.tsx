@@ -359,7 +359,7 @@ export function AiView() {
     setAppState('loading');
 
     try {
-      const res = await api.post('/proofly/generate-questions/', {  // ✅ adjust if needed
+      const res = await api.post('/proofly/generate-questions/', {  // ✅ adjust if needed
         topic: topic.trim(),
         number_of_questions: 5,
         study_time: studySeconds,
@@ -713,4 +713,4 @@ export function AiView() {
       </div>
     </div>
   );
-}
+} 
