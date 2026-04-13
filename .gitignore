@@ -1,0 +1,24 @@
+# Node
+node_modules/
+frontend/node_modules/
+
+# React build
+frontend/dist/
+frontend/build/
+
+# Django
+backend/__pycache__/
+*.pyc
+db.sqlite3
+
+# Env files
+.env
+frontend/.env
+backend/.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
