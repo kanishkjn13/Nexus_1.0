@@ -23,6 +23,6 @@ from django.conf import settings
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/auth/", include("apps.User.urls")),
-    path("api/", include("apps.User_session.urls")),
-    path("api/", include("apps.proofly.urls")),
+    path("api/sessions/", include("apps.User_session.urls")),
+    path("api/proofly/", include("apps.proofly.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
