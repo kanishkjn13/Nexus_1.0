@@ -7,7 +7,7 @@ export function useProgress() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        api.get('/progress/')
+        api.get('/sessions/progress/')
             .then((res) => setData(res.data))
             .catch((err) => setError(err.message))
             .finally(() => setLoading(false));

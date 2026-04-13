@@ -1,9 +1,10 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'http://localhost:8000/api',
+    baseURL: 'http://localhost:8000/api',  // your Django backend URL
 });
 
+// Auto-attach JWT token to every request
 api.interceptors.request.use((config) => {
     const token = localStorage.getItem('access_token');
     if (token) {
