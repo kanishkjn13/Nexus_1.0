@@ -359,7 +359,7 @@ export function AiView() {
     setAppState('loading');
 
     try {
-      const res = await api.post('/proofly/generate-questions/', {  // ✅ adjust if needed
+      const res = await api.post('/proofly/generate-questions/', {
         topic: topic.trim(),
         number_of_questions: 5,
         study_time: studySeconds,
@@ -384,7 +384,7 @@ export function AiView() {
       startTimer(quizLimit);
 
     } catch (err: any) {
-      console.error(err); // ✅ DEBUG
+      console.error(err);
       setErrorMsg(
         err?.response?.data?.detail ||
         err?.response?.data?.error ||
@@ -410,7 +410,7 @@ export function AiView() {
       );
 
     try {
-      const res = await api.post('/sessions/', {
+      const res = await api.post('/sessions/sessions/', {
         topic: topic.trim(),
         score,
         total_questions: questions.length,
@@ -423,21 +423,21 @@ export function AiView() {
       setResult({
         score: res.data.score,
         total_questions: totalQ,
-        accuracy: totalQ > 0 ? (res.data.score / totalQ) * 100 : 0, // ✅ FIX
+        accuracy: totalQ > 0 ? (res.data.score / totalQ) * 100 : 0,
         timed_out: res.data.timed_out,
         time_taken: timeTaken,
         time_limit: timeLimit,
       });
 
     } catch (err) {
-      console.error(err); // ✅ DEBUG
+      console.error(err);
 
       const totalQ = questions.length || 0;
 
       setResult({
         score,
         total_questions: totalQ,
-        accuracy: totalQ > 0 ? (score / totalQ) * 100 : 0, // ✅ FIX
+        accuracy: totalQ > 0 ? (score / totalQ) * 100 : 0,
         timed_out: timedOut,
         time_taken: timeTaken,
         time_limit: timeLimit,

@@ -76,19 +76,31 @@ function StatCard({ icon: Icon, title, value, colorClass }: any) {
 export function ProgressView() {
   const { data, loading } = useProgress();
 
-  // Process data - using slice(-6) to always get the LATEST items
   const processed = useMemo(() => {
     if (!data?.topics) return { chart: [], list: [], total: 0 };
+
     const entries = Object.entries(data.topics);
-    const selection = entries.slice(-6); // Grab newest 6
+
+    // take latest 6
+    const latest = entries.slice(-6);
+
     return {
-      chart: topicsToChartData(Object.fromEntries(selection)),
-      list: topicsToProgressList(Object.fromEntries(selection)),
-      total: entries.length
+      chart: latest.map(([name, stat]: any) => ({
+        name: formatTopicName(name),
+        accuracy: Number((stat?.accuracy || 0).toFixed(1)),
+      })),
+      list: latest.map(([name, stat]: any, i: number) => ({
+        name: formatTopicName(name),
+        progress: Math.round(stat?.accuracy || 0),
+        color: COLORS[i % COLORS.length],
+      })),
+      total: entries.length,
     };
   }, [data]);
 
-  if (loading || !data) return <div className="p-10 text-center font-black animate-pulse">Loading Analytics...</div>;
+  if (loading || !data) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="flex flex-col gap-8 pb-10 animate-in fade-in duration-700">
