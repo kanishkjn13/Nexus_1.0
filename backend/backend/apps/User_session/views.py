@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from django.db.models import Sum, Count
+from django.db.models import Sum, Count, Max
 
 from .models import StudySession
 from .serializers import StudySessionSerializer
@@ -73,7 +73,8 @@ class ProgressView(APIView):
             total_questions=Sum("total_questions"),
             total_correct=Sum("score"),
             sessions=Count("id"),
-        )
+            latest_session=Max("created_at"),
+        ).order_by("latest_session")
 
         topics_data = {}
         for stat in topic_rows:
