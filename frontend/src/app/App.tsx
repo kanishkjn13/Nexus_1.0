@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useCallback, useMemo, useEffect } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { HeroSection } from './components/HeroSection';

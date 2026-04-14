@@ -1,3 +1,4 @@
+import React from "react";
 import { Home, Trophy, Target, Sparkles, User, Settings, LogOut, Zap, HelpCircle, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
@@ -31,8 +32,8 @@ export function Sidebar({ activeView, onNavigate, onLogout, isOpen, onClose }: S
   return (
     <>
       {/* Mobile Overlay */}
-      <div 
-        className={`fixed inset-0 bg-black/40 backdrop-blur-sm z-[45] lg:hidden transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`} 
+      <div
+        className={`fixed inset-0 bg-black/40 backdrop-blur-sm z-[45] lg:hidden transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         onClick={onClose}
       />
 
@@ -46,7 +47,7 @@ export function Sidebar({ activeView, onNavigate, onLogout, isOpen, onClose }: S
           </button>
 
           <div className="absolute inset-0 bg-white/5 dark:bg-transparent pointer-events-none rounded-[32px]"></div>
-          
+
           {/* Top Section */}
           <div className="flex flex-col gap-2 w-full px-4">
             {/* Logo Mark */}
@@ -56,13 +57,13 @@ export function Sidebar({ activeView, onNavigate, onLogout, isOpen, onClose }: S
               </div>
               <span className="text-[#362A4A] dark:text-[#FBE4D8] font-black text-[22px] tracking-tight group-hover:text-[#522B5B] dark:group-hover:text-cyan-300 transition-colors">Proofly.</span>
             </div>
-            
+
             {/* Nav Items */}
             {navItems.map(({ id, icon: Icon, label }) => {
               const isActive = activeView === id;
               return (
-                <div 
-                  key={id} 
+                <div
+                  key={id}
                   onClick={() => onNavigate(id)}
                   className={`w-full flex items-center gap-4 transition-all cursor-pointer relative py-3 px-3 rounded-[12px] group overflow-hidden ${isActive ? 'bg-[#522B5B]/10 dark:bg-white/10 text-[#362A4A] dark:text-[#FBE4D8] shadow-sm' : 'text-[#362A4A]/50 dark:text-[#DFB6B2]/50 hover:text-[#362A4A] dark:hover:text-[#FBE4D8]'}`}
                 >
@@ -75,17 +76,17 @@ export function Sidebar({ activeView, onNavigate, onLogout, isOpen, onClose }: S
               );
             })}
           </div>
-          
+
           {/* Bottom Section */}
           <div className="flex flex-col gap-4 w-full px-6 border-t border-[#362A4A]/10 dark:border-white/10 pt-6">
-            <div 
+            <div
               onClick={() => onNavigate('settings')}
               className={`w-full flex items-center gap-4 text-[#362A4A]/50 dark:text-[#DFB6B2]/50 hover:text-[#362A4A] dark:hover:text-[#FBE4D8] transition-colors cursor-pointer py-2 ${activeView === 'settings' ? 'text-[#362A4A] dark:text-[#FBE4D8]' : ''}`}
             >
               <Settings className="w-[20px] h-[20px]" />
               <span className="font-semibold text-[15px]">Settings</span>
             </div>
-            <div 
+            <div
               onClick={onLogout}
               className="w-full flex items-center gap-4 text-[#362A4A]/40 dark:text-[#DFB6B2]/40 hover:text-[#522B5B] dark:hover:text-red-400 transition-colors cursor-pointer py-2 group"
             >

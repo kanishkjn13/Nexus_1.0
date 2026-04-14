@@ -1,3 +1,4 @@
+import React from "react";
 import { Zap, Target, Users, Shield, Cpu, Globe, Rocket } from 'lucide-react';
 
 export function AboutView() {

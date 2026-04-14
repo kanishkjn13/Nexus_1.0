@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from 'react';
 import { Zap, Mail, Lock, User, ArrowRight, ChevronLeft, HelpCircle } from 'lucide-react';
 
