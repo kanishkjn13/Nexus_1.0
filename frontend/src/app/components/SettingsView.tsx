@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useEffect } from 'react';
 import { Settings, Bell, Shield, Moon, Sun, HelpCircle, CheckCircle2, Circle, Zap, CreditCard, UserMinus, MessageCircle, FileText, ExternalLink, Mail, Phone, Globe, ChevronRight, Search } from 'lucide-react';
 import { useTheme } from 'next-themes';
@@ -42,14 +43,14 @@ export function SettingsView() {
 
   return (
     <div className="max-w-[1200px] mx-auto py-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      
+
       <div className="mb-8 pl-2">
         <h1 className="text-4xl font-black text-[#362A4A] dark:text-[#FBE4D8] mb-2">Settings</h1>
         <p className="text-[#362A4A]/60 dark:text-[#DFB6B2]/60 font-bold text-[16px]">Manage your account preferences and application settings.</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        
+
         {/* Sidebar Nav */}
         <div className="lg:col-span-3">
           <div className="bg-white/40 dark:bg-[#2B124C]/40 backdrop-blur-xl rounded-[28px] border border-white/60 dark:border-white/10 p-4 flex flex-col gap-2 shadow-sm">
@@ -73,7 +74,7 @@ export function SettingsView() {
 
         {/* Content Section */}
         <div className="lg:col-span-9 bg-white/40 dark:bg-[#2B124C]/40 backdrop-blur-xl rounded-[32px] border border-white/60 dark:border-white/10 p-10 shadow-sm relative overflow-hidden min-h-[600px]">
-          
+
           {activeTab === 'general' && (
             <div className="flex flex-col gap-8 animate-in fade-in duration-500">
               <div className="flex flex-col gap-2">
@@ -93,7 +94,7 @@ export function SettingsView() {
                       <p className="text-xs font-bold text-[#362A4A]/50 dark:text-[#DFB6B2]/50">Switch between light and dark mode</p>
                     </div>
                   </div>
-                  <button 
+                  <button
                     onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
                     className="px-6 py-2.5 rounded-xl bg-[#522B5B] text-white font-black text-xs hover:bg-[#854F6C] transition-colors shadow-lg shadow-purple-900/20"
                   >
@@ -114,7 +115,7 @@ export function SettingsView() {
                       <p className="text-xs font-bold text-[#362A4A]/50 dark:text-[#DFB6B2]/50">Need help? Visit our support documentation</p>
                     </div>
                   </div>
-                  <button 
+                  <button
                     onClick={() => setActiveTab('help')}
                     className="px-6 py-2.5 rounded-xl border-2 border-[#522B5B] text-[#522B5B] dark:text-[#FBE4D8] dark:border-[#DFB6B2]/20 font-black text-xs hover:bg-[#522B5B] hover:text-white dark:hover:bg-white/5 transition-all"
                   >
@@ -143,7 +144,7 @@ export function SettingsView() {
                 <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none">
                   <Search className="w-5 h-5 text-[#522B5B]/30 dark:text-white/30" />
                 </div>
-                <input 
+                <input
                   type="text"
                   placeholder="Search articles, guides..."
                   value={searchQuery}
@@ -154,22 +155,22 @@ export function SettingsView() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <a href="#" className="flex items-center gap-4 p-5 rounded-[24px] bg-white/40 dark:bg-white/5 border border-white/60 dark:border-white/10 hover:scale-[1.02] transition-all group">
-                   <div className="w-12 h-12 rounded-2xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
-                     <Mail className="w-6 h-6 text-purple-600 dark:text-purple-400" />
-                   </div>
-                   <div className="flex-1">
-                     <div className="text-[10px] font-black text-[#522B5B]/50 dark:text-white/30 uppercase tracking-widest">Email Us</div>
-                     <div className="text-[15px] font-black text-[#362A4A] dark:text-[#FBE4D8]">support@proofly.ai</div>
-                   </div>
+                  <div className="w-12 h-12 rounded-2xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+                    <Mail className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-[10px] font-black text-[#522B5B]/50 dark:text-white/30 uppercase tracking-widest">Email Us</div>
+                    <div className="text-[15px] font-black text-[#362A4A] dark:text-[#FBE4D8]">support@proofly.ai</div>
+                  </div>
                 </a>
                 <a href="#" className="flex items-center gap-4 p-5 rounded-[24px] bg-white/40 dark:bg-white/5 border border-white/60 dark:border-white/10 hover:scale-[1.02] transition-all group">
-                   <div className="w-12 h-12 rounded-2xl bg-pink-100 dark:bg-pink-900/30 flex items-center justify-center">
-                     <MessageCircle className="w-6 h-6 text-pink-600 dark:text-pink-400" />
-                   </div>
-                   <div className="flex-1">
-                     <div className="text-[10px] font-black text-[#522B5B]/50 dark:text-white/30 uppercase tracking-widest">Live Chat</div>
-                     <div className="text-[15px] font-black text-[#362A4A] dark:text-[#FBE4D8]">Average: 2m</div>
-                   </div>
+                  <div className="w-12 h-12 rounded-2xl bg-pink-100 dark:bg-pink-900/30 flex items-center justify-center">
+                    <MessageCircle className="w-6 h-6 text-pink-600 dark:text-pink-400" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-[10px] font-black text-[#522B5B]/50 dark:text-white/30 uppercase tracking-widest">Live Chat</div>
+                    <div className="text-[15px] font-black text-[#362A4A] dark:text-[#FBE4D8]">Average: 2m</div>
+                  </div>
                 </a>
               </div>
 
@@ -178,8 +179,8 @@ export function SettingsView() {
                 {FAQS.map((faq, i) => (
                   <details key={i} className="group overflow-hidden rounded-2xl border border-white/20 dark:border-white/5 bg-white/30 dark:bg-white/5 transition-all outline-none">
                     <summary className="flex items-center justify-between p-5 cursor-pointer list-none outline-none">
-                       <h4 className="text-[14px] font-black text-[#362A4A] dark:text-[#FBE4D8] leading-relaxed pr-4">{faq.q}</h4>
-                       <ChevronRight className="w-5 h-5 text-[#854F6C] transition-transform duration-300 group-open:rotate-90" />
+                      <h4 className="text-[14px] font-black text-[#362A4A] dark:text-[#FBE4D8] leading-relaxed pr-4">{faq.q}</h4>
+                      <ChevronRight className="w-5 h-5 text-[#854F6C] transition-transform duration-300 group-open:rotate-90" />
                     </summary>
                     <div className="px-5 pb-5 pt-0 animate-in slide-in-from-top-2 duration-300">
                       <p className="text-[13px] text-[#362A4A]/70 dark:text-[#DFB6B2]/70 font-bold leading-relaxed border-t border-black/5 dark:border-white/5 pt-4">
@@ -194,12 +195,12 @@ export function SettingsView() {
 
           {activeTab !== 'general' && activeTab !== 'help' && (
             <div className="flex flex-col items-center justify-center py-20 text-center animate-in fade-in duration-500">
-               <div className="w-24 h-24 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center mb-6">
-                 <Settings className="w-10 h-10 text-[#DFB6B2]/20 animate-spin-slow" />
-               </div>
-               <h4 className="text-2xl font-black text-[#362A4A] dark:text-[#FBE4D8] mb-2">{tabs.find(t => t.id === activeTab)?.label}</h4>
-               <p className="text-[#362A4A]/60 dark:text-[#DFB6B2]/60 font-bold max-w-sm">We're updating the {activeTab} settings to provide more control over your experience.</p>
-               <button onClick={() => setActiveTab('general')} className="mt-6 text-[#522B5B] dark:text-[#DFB6B2] font-black text-sm hover:underline">Return to General Settings</button>
+              <div className="w-24 h-24 rounded-full bg-black/5 dark:bg-white/5 flex items-center justify-center mb-6">
+                <Settings className="w-10 h-10 text-[#DFB6B2]/20 animate-spin-slow" />
+              </div>
+              <h4 className="text-2xl font-black text-[#362A4A] dark:text-[#FBE4D8] mb-2">{tabs.find(t => t.id === activeTab)?.label}</h4>
+              <p className="text-[#362A4A]/60 dark:text-[#DFB6B2]/60 font-bold max-w-sm">We're updating the {activeTab} settings to provide more control over your experience.</p>
+              <button onClick={() => setActiveTab('general')} className="mt-6 text-[#522B5B] dark:text-[#DFB6B2] font-black text-sm hover:underline">Return to General Settings</button>
             </div>
           )}
         </div>

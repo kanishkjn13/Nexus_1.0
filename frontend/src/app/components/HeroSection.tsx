@@ -1,3 +1,4 @@
+import React from "react";
 import { useTheme } from 'next-themes';
 // @ts-ignore - TS server caching may temporarily miss the newly created image
 import heroImage from '../../assets/active_session_hero.png';

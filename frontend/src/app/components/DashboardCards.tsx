@@ -1,5 +1,6 @@
+import React from "react";
 import {
-  Trophy, CheckCircle2, Target, Flame,
+  Trophy, CheckCircle2, Target, Flame, Trash2,
   PlusCircle, Trash, X, Play, Square, RefreshCw, Clock
 } from 'lucide-react';
 import { useState, useMemo, useEffect, useRef } from 'react';
@@ -109,28 +110,60 @@ export function DashboardCards({ searchQuery = '' }) {
         <div className="absolute -right-10 -top-10 w-40 h-40 bg-purple-500/5 rounded-full blur-3xl" />
         <div className="flex justify-between items-center mb-4">
           <Label>Focus Timer</Label>
-          {!isActive && (
-            <div className="flex items-center bg-purple-500/10 dark:bg-white/5 rounded-lg px-2 py-1 ring-1 ring-purple-500/20">
-              <input
-                type="number"
-                value={inputMinutes || ''}
-                onChange={(e) => setInputMinutes(Math.max(0, Number(e.target.value)))}
-                className="w-8 bg-transparent text-center font-black text-xs outline-none text-purple-600"
-              />
-              <span className="text-[10px] font-bold opacity-40 lowercase">m</span>
-            </div>
-          )}
         </div>
 
-        <div className="flex-1 flex flex-col items-center justify-center">
-          <div className="text-[72px] font-black text-[#362A4A] dark:text-[#FBE4D8] tracking-tighter tabular-nums">
-            {formatTime(seconds)}
+        <div className="flex-1 flex flex-col items-center justify-center relative py-4">
+          {/* Circular Progress Timer */}
+          <div className="relative w-44 h-44 flex items-center justify-center">
+            <svg className="absolute inset-0 w-full h-full transform -rotate-90" viewBox="0 0 160 160">
+              <circle
+                cx="80"
+                cy="80"
+                r="74"
+                fill="none"
+                stroke="currentColor"
+                className="text-black/5 dark:text-white/5"
+                strokeWidth="3"
+              />
+              <circle
+                cx="80"
+                cy="80"
+                r="74"
+                fill="none"
+                stroke="currentColor"
+                className="text-[#522B5B] dark:text-[#DFB6B2] transition-all duration-1000 ease-linear"
+                strokeWidth="3"
+                strokeDasharray="465"
+                strokeDashoffset={465 - (465 * (inputMinutes > 0 ? (seconds / (inputMinutes * 60)) : 0))}
+                strokeLinecap="round"
+              />
+            </svg>
+            <div className="flex flex-col items-center justify-center z-10 w-full">
+              {!isActive ? (
+                <input
+                  type="number"
+                  value={inputMinutes === 0 ? '' : inputMinutes}
+                  placeholder="25"
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    setInputMinutes(val === '' ? 0 : Math.max(1, parseInt(val) || 0));
+                  }}
+                  onBlur={() => { if (!inputMinutes || inputMinutes <= 0) setInputMinutes(25); }}
+                  title="Set minutes"
+                  className="w-[100px] bg-transparent text-center text-[48px] font-black text-[#362A4A] dark:text-[#FBE4D8] outline-none transition-all placeholder:text-[#362A4A]/20 dark:placeholder:text-[#FBE4D8]/20 tabular-nums z-10 selection:bg-[#522B5B]/20 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                />
+              ) : (
+                <div className="text-[48px] font-black text-[#362A4A] dark:text-[#FBE4D8] tracking-tighter tabular-nums z-10">
+                  {formatTime(seconds)}
+                </div>
+              )}
+            </div>
           </div>
-          <div className="flex gap-3 w-full mt-4 relative z-10">
+          <div className="flex gap-4 w-full mt-10 relative z-10 px-2">
             <button
               onClick={() => setIsActive(!isActive)}
               disabled={seconds === 0}
-              className={`flex-1 h-12 rounded-2xl font-black text-[13px] flex items-center justify-center gap-2 transition-all active:scale-95 disabled:opacity-50 ${isActive ? 'bg-red-50 text-red-500' : 'bg-[#362A4A] text-white dark:bg-[#FBE4D8] dark:text-[#190019]'
+              className={`flex-1 h-12 rounded-2xl font-black text-[13px] flex items-center justify-center gap-2 transition-all active:scale-95 disabled:opacity-50 ${isActive ? 'bg-red-50 text-red-500 dark:bg-red-500/20 dark:text-red-400' : 'bg-[#522B5B] text-white dark:bg-[#DFB6B2] dark:text-[#190019]'
                 }`}
             >
               {isActive ? <Square size={14} fill="currentColor" /> : <Play size={14} fill="currentColor" />}
@@ -138,7 +171,7 @@ export function DashboardCards({ searchQuery = '' }) {
             </button>
             <button
               onClick={() => { setIsActive(false); setSeconds(inputMinutes * 60); }}
-              className="w-12 h-12 rounded-2xl bg-black/5 dark:bg-white/5 flex items-center justify-center text-gray-400 hover:text-purple-50 transition-colors"
+              className="w-12 h-12 rounded-2xl bg-black/5 dark:bg-white/5 flex items-center justify-center text-gray-400 hover:text-[#522B5B] dark:hover:text-[#FBE4D8] transition-colors"
             >
               <RefreshCw size={18} />
             </button>
@@ -160,7 +193,7 @@ export function DashboardCards({ searchQuery = '' }) {
               <div className="flex-1 min-w-0">
                 <div className="flex justify-between mb-1">
                   <h4 className="font-black text-[12px] text-[#362A4A] dark:text-[#FBE4D8] truncate">{s.name}</h4>
-                  <span className="text-[10px] font-black text-purple-500">{s.xp} XP</span>
+                  <span className="text-[10px] font-black text-[#854F6C] dark:text-[#DFB6B2]">{s.xp} XP</span>
                 </div>
                 <div className="w-full h-1 bg-black/5 dark:bg-white/5 rounded-full">
                   <div className={`h-full bg-gradient-to-r ${s.color} rounded-full`} style={{ width: '70%' }} />
@@ -176,7 +209,7 @@ export function DashboardCards({ searchQuery = '' }) {
         <div className="flex justify-between items-center mb-4">
           <Label>Daily Tasks</Label>
           <button onClick={() => setIsAddingTask(!isAddingTask)} className="p-1.5 hover:bg-black/5 dark:hover:bg-white/5 rounded-lg transition-colors">
-            {isAddingTask ? <X size={16} /> : <PlusCircle size={16} className="text-purple-500" />}
+            {isAddingTask ? <X size={16} /> : <PlusCircle size={16} className="text-[#522B5B] dark:text-[#DFB6B2]" />}
           </button>
         </div>
         {isAddingTask && (
@@ -186,7 +219,7 @@ export function DashboardCards({ searchQuery = '' }) {
               value={newTaskName}
               onChange={(e) => setNewTaskName(e.target.value)}
               placeholder="Enter task..."
-              className="w-full h-9 bg-black/5 dark:bg-white/5 border-none rounded-xl px-3 text-xs font-bold outline-none ring-1 ring-purple-500/20 focus:ring-purple-500/50"
+              className="w-full h-9 bg-black/5 dark:bg-white/5 border-none rounded-xl px-3 text-xs font-bold outline-none ring-1 ring-[#522B5B]/20 dark:ring-[#DFB6B2]/20 focus:ring-[#522B5B]/50 dark:focus:ring-[#DFB6B2]/50 text-[#362A4A] dark:text-[#FBE4D8]"
             />
           </form>
         )}
@@ -194,13 +227,26 @@ export function DashboardCards({ searchQuery = '' }) {
           {tasks.map((task) => (
             <div
               key={task.id}
-              onClick={() => setTasks(tasks.map(t => t.id === task.id ? { ...t, checked: !t.checked } : t))}
-              className={`flex items-center gap-3 p-3 rounded-2xl cursor-pointer transition-all ${task.checked ? 'opacity-30' : 'bg-white/50 dark:bg-white/5 hover:scale-[1.02]'}`}
+              className={`flex items-center gap-3 p-3 rounded-2xl transition-all group ${task.checked ? 'opacity-50' : 'bg-white/50 dark:bg-white/5 hover:scale-[1.02]'}`}
             >
-              <div className={`w-4 h-4 rounded-md border-2 flex items-center justify-center ${task.checked ? 'bg-purple-500 border-purple-500' : 'border-purple-200'}`}>
-                {task.checked && <CheckCircle2 size={10} className="text-white" />}
+              <div 
+                className={`w-4 h-4 rounded-md border-2 flex items-center justify-center cursor-pointer transition-colors ${task.checked ? 'bg-[#522B5B] border-[#522B5B] dark:bg-[#DFB6B2] dark:border-[#DFB6B2]' : 'border-[#522B5B]/30 dark:border-[#DFB6B2]/30'}`}
+                onClick={() => setTasks(tasks.map(t => t.id === task.id ? { ...t, checked: !t.checked } : t))}
+              >
+                {task.checked && <CheckCircle2 size={10} className="text-white dark:text-[#190019]" />}
               </div>
-              <span className={`text-xs font-bold truncate ${task.checked ? 'line-through' : ''}`}>{task.name}</span>
+              <span 
+                className={`text-xs font-bold truncate flex-1 cursor-pointer transition-all text-[#362A4A] dark:text-[#FBE4D8] ${task.checked ? 'line-through opacity-70' : ''}`}
+                onClick={() => setTasks(tasks.map(t => t.id === task.id ? { ...t, checked: !t.checked } : t))}
+              >
+                {task.name}
+              </span>
+              <button
+                onClick={(e) => { e.stopPropagation(); setTasks(tasks.filter(t => t.id !== task.id)); }}
+                className="opacity-0 group-hover:opacity-100 p-1.5 text-red-500 hover:bg-red-500/10 rounded-lg transition-all"
+              >
+                <Trash2 size={14} />
+              </button>
             </div>
           ))}
         </div>
@@ -215,14 +261,14 @@ export function DashboardCards({ searchQuery = '' }) {
               {data?.overall?.accuracy || 0}%
             </h2>
           </div>
-          <div className="w-12 h-12 rounded-xl bg-purple-100 dark:bg-purple-500/20 flex items-center justify-center text-purple-600">
+          <div className="w-12 h-12 rounded-xl bg-[#522B5B]/10 dark:bg-[#DFB6B2]/10 flex items-center justify-center text-[#522B5B] dark:text-[#DFB6B2]">
             <Target size={24} />
           </div>
         </div>
         <div className="mt-6">
           <div className="w-full h-3 bg-black/5 dark:bg-white/5 rounded-full overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-1000"
+              className="h-full bg-gradient-to-r from-[#522B5B] to-[#854F6C] dark:from-[#DFB6B2] dark:to-[#FBE4D8] transition-all duration-1000"
               style={{ width: `${data?.overall?.accuracy || 0}%` }}
             />
           </div>
@@ -255,15 +301,15 @@ export function DashboardCards({ searchQuery = '' }) {
                 {day.day}
               </span>
               <div className={`w-full max-w-[50px] rounded-2xl transition-all duration-500 flex items-center justify-center ${day.completed
-                  ? 'h-16 bg-gradient-to-b from-orange-400 to-red-500 shadow-md shadow-orange-500/20'
-                  : day.isToday
-                    ? 'h-12 bg-white dark:bg-white/5 border-2 border-dashed border-orange-500/50'
-                    : 'h-10 bg-black/5 dark:bg-white/5'
+                ? 'h-16 bg-gradient-to-b from-[#522B5B] to-[#854F6C] dark:from-[#DFB6B2] dark:to-[#FBE4D8] shadow-md shadow-[#522B5B]/20 dark:shadow-[#DFB6B2]/20'
+                : day.isToday
+                  ? 'h-12 bg-white dark:bg-white/5 border-2 border-dashed border-[#522B5B]/50 dark:border-[#DFB6B2]/50'
+                  : 'h-10 bg-black/5 dark:bg-white/5'
                 }`}>
                 {day.completed ? (
-                  <CheckCircle2 size={18} className="text-white" />
+                  <CheckCircle2 size={18} className="text-white dark:text-[#190019]" />
                 ) : day.isToday ? (
-                  <div className="w-2 h-2 bg-orange-500 rounded-full animate-ping" />
+                  <div className="w-2 h-2 bg-[#522B5B] dark:bg-[#DFB6B2] rounded-full animate-ping" />
                 ) : (
                   <div className="w-1.5 h-1.5 bg-gray-300 dark:bg-gray-700 rounded-full" />
                 )}

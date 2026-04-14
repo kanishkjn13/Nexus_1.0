@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from 'react';
 import { User, Mail, Phone, MapPin, GraduationCap, Award, Settings, Bell, Shield, LogOut, Camera, Save, CheckCircle2, Circle, ChevronDown } from 'lucide-react';
 

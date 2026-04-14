@@ -1,3 +1,4 @@
+import React from "react";
 import React, { useState } from 'react';
 import {
   Trophy, Flame, Star, CheckCircle2, Globe, Clock,
@@ -11,15 +12,15 @@ export function ChallengesView() {
   return (
     <div className="w-full text-white font-sans animate-in fade-in slide-in-from-bottom-5 duration-500 pb-10">
       {/* HEADER */}
-        {/* Header Text */}
-        <div className="z-10">
-          <h1 className="text-4xl md:text-5xl font-bold mb-3 tracking-tight dark:text-white text-[#362A4A]">
-            Challenges
-          </h1>
-          <p className="text-gray-500 dark:text-gray-300 text-lg max-w-md">
-            Push your limits, earn XP, and unlock new achievements!
-          </p>
-        </div>
+      {/* Header Text */}
+      <div className="z-10">
+        <h1 className="text-4xl md:text-5xl font-bold mb-3 tracking-tight dark:text-white text-[#362A4A]">
+          Challenges
+        </h1>
+        <p className="text-gray-500 dark:text-gray-300 text-lg max-w-md">
+          Push your limits, earn XP, and unlock new achievements!
+        </p>
+      </div>
 
       {/* STATS ROW */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">

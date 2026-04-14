@@ -1,3 +1,4 @@
+import React from "react";
 import { Bell, Search, X, Menu } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
@@ -53,7 +54,7 @@ export function TopNav({ onSearch, user, onProfileClick, onMenuClick }: TopNavPr
   return (
     <nav className={`flex justify-between items-center px-4 md:px-10 py-5 sticky top-0 z-40 transition-all duration-300 ease-out ${scrolled ? 'bg-white/70 dark:bg-[#190019]/80 backdrop-blur-xl border-b border-white/50 dark:border-white/5 shadow-sm' : 'bg-transparent'}`}>
       <div className="flex items-center gap-4 md:gap-6 flex-1">
-        <button 
+        <button
           onClick={onMenuClick}
           className="lg:hidden p-2.5 bg-white/40 dark:bg-[#2B124C]/40 backdrop-blur-md rounded-xl border border-white/60 dark:border-white/10 text-[#362A4A] dark:text-[#FBE4D8] hover:scale-105 active:scale-95 transition-all"
         >
@@ -68,11 +69,11 @@ export function TopNav({ onSearch, user, onProfileClick, onMenuClick }: TopNavPr
 
       <div className="flex items-center gap-5 relative">
         <div className="relative">
-          <div onClick={() => {setShowNotifications(!showNotifications); setUnreadCount(0);}} className="bg-white/40 dark:bg-[#2B124C]/40 backdrop-blur-md p-3 rounded-full border border-white/60 dark:border-white/10 shadow-sm transition-all hover:scale-105 cursor-pointer">
+          <div onClick={() => { setShowNotifications(!showNotifications); setUnreadCount(0); }} className="bg-white/40 dark:bg-[#2B124C]/40 backdrop-blur-md p-3 rounded-full border border-white/60 dark:border-white/10 shadow-sm transition-all hover:scale-105 cursor-pointer">
             <Bell className="w-5 h-5 text-[#362A4A] dark:text-[#FBE4D8]" />
           </div>
           {unreadCount > 0 && <span className="absolute top-0 right-0 w-[11px] h-[11px] bg-[#854F6C] rounded-full border-[2px] border-white dark:border-[#190019] translate-x-[2px] translate-y-[2px] animate-pulse" />}
-          
+
           {showNotifications && (
             <div ref={popoverRef} className="absolute right-0 mt-4 w-80 bg-white/95 dark:bg-[#2B124C]/95 backdrop-blur-2xl rounded-[24px] shadow-2xl border border-white/20 dark:border-white/5 p-6 animate-in fade-in slide-in-from-top-2 duration-300">
               <div className="flex justify-between items-center mb-6">
@@ -93,7 +94,7 @@ export function TopNav({ onSearch, user, onProfileClick, onMenuClick }: TopNavPr
           )}
         </div>
 
-        <div 
+        <div
           onClick={onProfileClick}
           className="flex items-center gap-2 md:gap-3 cursor-pointer hover:bg-white/20 dark:hover:bg-white/5 p-1.5 md:p-2 pr-3 md:pr-4 rounded-full transition-all border border-transparent hover:border-white/40 dark:hover:border-white/10 shrink-0"
         >
